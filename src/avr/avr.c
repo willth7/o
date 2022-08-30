@@ -573,6 +573,196 @@ void avr_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		
 		*bn += 2;
 	}
+	else if (((bin[*bn + 1] & 254) == 148) && ((bin[*bn] & 15) == 0)) {
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + ((bin[*bn + 1] << 4) & 16);
+		
+		printf("com ");
+		printf("r%u ", rd);
+		
+		*bn += 2;
+	}
+	else if (((bin[*bn + 1] & 254) == 148) && ((bin[*bn] & 15) == 1)) {
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + ((bin[*bn + 1] << 4) & 16);
+		
+		printf("neg ");
+		printf("r%u ", rd);
+		
+		*bn += 2;
+	}
+	else if (((bin[*bn + 1] & 254) == 148) && ((bin[*bn] & 15) == 2)) {
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + ((bin[*bn + 1] << 4) & 16);
+		
+		printf("swap ");
+		printf("r%u ", rd);
+		
+		*bn += 2;
+	}
+	else if (((bin[*bn + 1] & 254) == 148) && ((bin[*bn] & 15) == 3)) {
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + ((bin[*bn + 1] << 4) & 16);
+		
+		printf("inc ");
+		printf("r%u ", rd);
+		
+		*bn += 2;
+	}
+	else if (((bin[*bn + 1] & 254) == 148) && ((bin[*bn] & 15) == 10)) {
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + ((bin[*bn + 1] << 4) & 16);
+		
+		printf("dec ");
+		printf("r%u ", rd);
+		
+		*bn += 2;
+	}
+	else if (((bin[*bn + 1] & 254) == 148) && ((bin[*bn] & 15) == 5)) {
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + ((bin[*bn + 1] << 4) & 16);
+		
+		printf("asr ");
+		printf("r%u ", rd);
+		
+		*bn += 2;
+	}
+	else if (((bin[*bn + 1] & 254) == 148) && ((bin[*bn] & 15) == 6)) {
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + ((bin[*bn + 1] << 4) & 16);
+		
+		printf("lsr ");
+		printf("r%u ", rd);
+		
+		*bn += 2;
+	}
+	else if (((bin[*bn + 1] & 254) == 148) && ((bin[*bn] & 15) == 7)) {
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + ((bin[*bn + 1] << 4) & 16);
+		
+		printf("ror ");
+		printf("r%u ", rd);
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] == 148) && (bin[*bn] == 8)) {
+		printf("sec ");
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] == 148) && (bin[*bn] == 24)) {
+		printf("sez ");
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] == 148) && (bin[*bn] == 40)) {
+		printf("sen ");
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] == 148) && (bin[*bn] == 56)) {
+		printf("sev ");
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] == 148) && (bin[*bn] == 72)) {
+		printf("ses ");
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] == 148) && (bin[*bn] == 88)) {
+		printf("seh ");
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] == 148) && (bin[*bn] == 104)) {
+		printf("set ");
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] == 148) && (bin[*bn] == 120)) {
+		printf("sei ");
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] == 148) && (bin[*bn] == 136)) {
+		printf("clc ");
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] == 148) && (bin[*bn] == 152)) {
+		printf("clz ");
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] == 148) && (bin[*bn] == 168)) {
+		printf("cln ");
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] == 148) && (bin[*bn] == 184)) {
+		printf("clv ");
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] == 148) && (bin[*bn] == 200)) {
+		printf("cls ");
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] == 148) && (bin[*bn] == 216)) {
+		printf("clh ");
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] == 148) && (bin[*bn] == 232)) {
+		printf("clt ");
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] == 148) && (bin[*bn] == 248)) {
+		printf("cli ");
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] == 149) && (bin[*bn] == 8)) {
+		printf("ret ");
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] == 149) && (bin[*bn] == 24)) {
+		printf("reti ");
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] == 149) && (bin[*bn] == 136)) {
+		printf("sleep ");
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] == 149) && (bin[*bn] == 152)) {
+		printf("break ");
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] == 149) && (bin[*bn] == 168)) {
+		printf("wdr ");
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] == 149) && (bin[*bn] == 200)) {
+		printf("lpm ");
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] == 149) && (bin[*bn] == 216)) {
+		printf("elpm ");
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] == 149) && (bin[*bn] == 232)) {
+		printf("spm ");
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] == 149) && (bin[*bn] == 248)) {
+		printf("spm ");
+		printf("z, 1 ");
+		
+		*bn += 2;
+	}
 	else {
 		printf("~byt2 %hu", ((bin[*bn + 1] << 8) + bin[*bn]));
 		*bn += 2;
