@@ -36,22 +36,19 @@ void o_dasm(uint8_t* bin, uint64_t bn, o_sym_t* sym, uint64_t symn, int8_t* e) {
 	while (bi < bn) {
 		for (uint64_t i = 0; i < symn; i++) {
 			if (sym[i].addr == bi) {
-				printf("*%s\n", (int8_t*) &(sym[i].str));
+				printf("(%s)\n", (int8_t*) &(sym[i].str));
 			}
 		}
 		
-		printf("%04lx %04lx    ", (bi >> 16) & 65535, (bi) & 65535);
+		uint64_t addr = (uint64_t) -1;
+		o_dec(bin, &bi, &addr);
 		
-		uint64_t* addr = 0;
-		o_dec(bin, &bi, addr);
-		
-		if (addr) {
+		if (addr != (uint64_t) -1) {
 			for (uint64_t i = 0; i < symn; i++) {
-				if (sym[i].addr == *addr) {
-					printf("%s", (int8_t*) &(sym[i].str));
+				if (sym[i].addr == addr) {
+					printf("(%s)", (int8_t*) &(sym[i].str));
 				}
 			}
-			free(addr);
 		}
 		printf("\n");
 	}
@@ -137,9 +134,9 @@ int8_t main(int32_t argc, int8_t** argv) {
 	}
 	
 	uint8_t* bin = calloc(1000, 1);
-	uint64_t bn;
+	uint64_t bn = 0;
 	o_sym_t* sym = calloc(1000, 1);
-	uint64_t symn;
+	uint64_t symn = 0;
 	
 	int8_t e = 0;
 	

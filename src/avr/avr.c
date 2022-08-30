@@ -20,7 +20,8 @@
 #include <stdio.h>
 
 void avr_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
-	printf("%02x %02x    ", bin[*bn + 1], bin[*bn]);
+	printf("%04lx %04lx    ", (*bn >> 16) & 65535, (*bn) & 65535); //address
+	printf("%02x %02x    ", bin[*bn + 1], bin[*bn]); //machine code
 	
 	if (bin[*bn + 1] == 0 && bin[*bn] == 0) {
 		printf("nop ");
@@ -290,13 +291,19 @@ void avr_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		printf("r%u ", rs);
 		*bn += 2;
 	}
-	else if (((bin[*bn + 1] & 254) == 144) && ((bin[*bn] & 15) == 0)) { //todo
+	else if (((bin[*bn + 1] & 254) == 144) && ((bin[*bn] & 15) == 0)) {
 		uint8_t rd = ((bin[*bn] >> 4) & 15) + ((bin[*bn + 1] << 4) & 16);
 		uint16_t k = (bin[*bn + 2]) + (bin[*bn + 3] << 8);
 		
 		printf("lds ");
 		printf("r%u, ", rd);
 		printf("%u ", k);
+		*bn += 2;
+		
+		printf("\n%04lx %04lx    ", (*bn >> 16) & 65535, (*bn) & 65535);
+		printf("%02x %02x    ", bin[*bn + 1], bin[*bn]);
+		
+		*addr = k;
 		
 		*bn += 2;
 	}
@@ -307,6 +314,12 @@ void avr_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		printf("sts ");
 		printf("%u, ", k);
 		printf("r%u ", rs);
+		*bn += 2;
+		
+		printf("\n%04lx %04lx    ", (*bn >> 16) & 65535, (*bn) & 65535);
+		printf("%02x %02x    ", bin[*bn + 1], bin[*bn]);
+		
+		*addr = k;
 		
 		*bn += 2;
 	}
