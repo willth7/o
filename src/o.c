@@ -19,6 +19,8 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "avr/avr.h"
+
 typedef struct o_sym_s {
 	int64_t str;
 	uint64_t addr;
@@ -27,15 +29,21 @@ typedef struct o_sym_s {
 
 void (*o_read) (uint8_t*, uint64_t*, o_sym_t*, uint64_t*, int8_t*, int8_t*);
 
-void (*o_dec) (uint8_t*, uint64_t, uint64_t*, int8_t*);
+void (*o_dec) (uint8_t*, uint64_t*, uint64_t*);
 
 void o_dasm(uint8_t* bin, uint64_t bn, o_sym_t* sym, uint64_t symn, int8_t* e) {
 	uint64_t bi = 0;
 	while (bi < bn) {
-		printf("[%016lx] ", bn);
+		for (uint64_t i = 0; i < symn; i++) {
+			if (sym[i].addr == bi) {
+				printf("*%s\n", (int8_t*) &(sym[i].str));
+			}
+		}
+		
+		printf("%04lx %04lx    ", (bi >> 16) & 65535, (bi) & 65535);
 		
 		uint64_t* addr = 0;
-		o_dec(bin, bn, addr, e);
+		o_dec(bin, &bi, addr);
 		
 		if (addr) {
 			for (uint64_t i = 0; i < symn; i++) {
@@ -43,6 +51,7 @@ void o_dasm(uint8_t* bin, uint64_t bn, o_sym_t* sym, uint64_t symn, int8_t* e) {
 					printf("%s", (int8_t*) &(sym[i].str));
 				}
 			}
+			free(addr);
 		}
 		printf("\n");
 	}
@@ -56,11 +65,14 @@ void o_read_bin(uint8_t* bin, uint64_t* bn, o_sym_t* sym, uint64_t* symn,int8_t*
 		return;
 	}
 	fseek(f, 0, SEEK_END);
-	*bn = ftell(f);
-	bin = malloc(*bn);
+	uint64_t fn = ftell(f);
+	uint8_t* fx = malloc(fn);
 	fseek(f, 0, SEEK_SET);
-	fread(bin, *bn, 1, f);
+	fread(fx, fn, 1, f);
 	fclose(f);
+	
+	memcpy(bin, fx, fn);
+	*bn = fn;
 }
 
 void o_read_zn(uint8_t* bin, uint64_t* bn, o_sym_t* sym, uint64_t* symn,int8_t* path, int8_t* e) {
@@ -89,7 +101,6 @@ void o_read_zn(uint8_t* bin, uint64_t* bn, o_sym_t* sym, uint64_t* symn,int8_t* 
 		return;
 	}
 	
-	bin = malloc(*bn);
 	memcpy(bin, fx + binoff, *bn);
 	
 	for (uint64_t i = 0; i < *symn; i++) {
@@ -108,7 +119,7 @@ int8_t main(int32_t argc, int8_t** argv) {
 	}
 	
 	if (!strcmp(argv[1], "avr")) {
-		
+		o_dec = avr_dec;
 	}
 	else {
 		printf("error: unsupported architecture\n");
@@ -125,9 +136,9 @@ int8_t main(int32_t argc, int8_t** argv) {
 		return -1;
 	}
 	
-	uint8_t* bin;
+	uint8_t* bin = calloc(1000, 1);
 	uint64_t bn;
-	o_sym_t* sym;
+	o_sym_t* sym = calloc(1000, 1);
 	uint64_t symn;
 	
 	int8_t e = 0;
@@ -138,5 +149,7 @@ int8_t main(int32_t argc, int8_t** argv) {
 		o_dasm(bin, bn, sym, symn, &e);
 	}
 	
+	free(bin);
+	free(sym);
 	return 0;
 }
