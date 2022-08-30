@@ -209,6 +209,107 @@ void avr_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		
 		*bn += 2;
 	}
+	else if ((bin[*bn + 1] & 240) == 48) {
+		uint8_t rd = (bin[*bn] >> 4) & 15;
+		uint8_t k = ((bin[*bn]) & 15) + ((bin[*bn + 1] << 4) & 240);
+		
+		printf("cpi ");
+		printf("r%u, ", rd);
+		printf("r%u ", k);
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 240) == 64) {
+		uint8_t rd = (bin[*bn] >> 4) & 15;
+		uint8_t k = ((bin[*bn]) & 15) + ((bin[*bn + 1] << 4) & 240);
+		
+		printf("subi ");
+		printf("r%u, ", rd);
+		printf("r%u ", k);
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 240) == 80) {
+		uint8_t rd = (bin[*bn] >> 4) & 15;
+		uint8_t k = ((bin[*bn]) & 15) + ((bin[*bn + 1] << 4) & 240);
+		
+		printf("sbci ");
+		printf("r%u, ", rd);
+		printf("r%u ", k);
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 240) == 96) {
+		uint8_t rd = (bin[*bn] >> 4) & 15;
+		uint8_t k = ((bin[*bn]) & 15) + ((bin[*bn + 1] << 4) & 240);
+		
+		printf("ori ");
+		printf("r%u, ", rd);
+		printf("r%u ", k);
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 240) == 112) {
+		uint8_t rd = (bin[*bn] >> 4) & 15;
+		uint8_t k = ((bin[*bn]) & 15) + ((bin[*bn + 1] << 4) & 240);
+		
+		printf("andi ");
+		printf("r%u, ", rd);
+		printf("r%u ", k);
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 210) == 128) {
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + ((bin[*bn + 1] << 4) & 16);
+		uint8_t k = ((bin[*bn]) & 7) + ((bin[*bn + 1] << 1) & 24) + ((bin[*bn + 1]) & 32);
+		
+		printf("ldd ");
+		printf("r%u, ", rd);
+		if (bin[*bn] & 8)  {
+			printf("y, ");
+		}
+		else {
+			printf("z, ");
+		}
+		printf("%u ", k);
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 210) == 130) {
+		uint8_t rs = ((bin[*bn] >> 4) & 15) + ((bin[*bn + 1] << 4) & 16);
+		uint8_t k = ((bin[*bn]) & 7) + ((bin[*bn + 1] << 1) & 24) + ((bin[*bn + 1]) & 32);
+		
+		printf("std ");
+		if (bin[*bn] & 8)  {
+			printf("y, ");
+		}
+		else {
+			printf("z, ");
+		}
+		printf("%u, ", k);
+		printf("r%u ", rs);
+		*bn += 2;
+	}
+	else if (((bin[*bn + 1] & 254) == 144) && ((bin[*bn] & 15) == 0)) { //todo
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + ((bin[*bn + 1] << 4) & 16);
+		uint16_t k = (bin[*bn + 2]) + (bin[*bn + 3] << 8);
+		
+		printf("lds ");
+		printf("r%u, ", rd);
+		printf("%u ", k);
+		
+		*bn += 2;
+	}
+	else if (((bin[*bn + 1] & 254) == 146) && ((bin[*bn] & 15) == 0)) { //todo
+		uint8_t rs = ((bin[*bn] >> 4) & 15) + ((bin[*bn + 1] << 4) & 16);
+		uint16_t k = (bin[*bn + 2]) + (bin[*bn + 3] << 8);
+		
+		printf("sts ");
+		printf("%u, ", k);
+		printf("r%u ", rs);
+		
+		*bn += 2;
+	}
 	else {
 		printf("~byt2 %hu", ((bin[*bn + 1] << 8) + bin[*bn]));
 		*bn += 2;
