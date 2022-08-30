@@ -24,42 +24,189 @@ void avr_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 	
 	if (bin[*bn + 1] == 0 && bin[*bn] == 0) {
 		printf("nop ");
+		
 		*bn += 2;
 	}
 	else if (bin[*bn + 1] == 1) {
+		uint8_t rd = ((bin[*bn] >> 4) & 15) * 2;
+		uint8_t rs = ((bin[*bn]) & 15) * 2;
+		
 		printf("movw ");
-		printf("r%u, ", ((bin[*bn] >> 4) & 15) * 2);
-		printf("r%u ", ((bin[*bn]) & 15) * 2);
+		printf("r%u, ", rd);
+		printf("r%u ", rs);
+		
 		*bn += 2;
 	}
 	else if (bin[*bn + 1] == 2) {
+		uint8_t rd = ((bin[*bn] >> 4) & 15) * 2;
+		uint8_t rs = ((bin[*bn]) & 15) * 2;
+		
 		printf("muls ");
-		printf("r%u, ", ((bin[*bn] >> 4) & 15) + 16);
-		printf("r%u ", ((bin[*bn]) & 15) + 16);
+		printf("r%u, ", rd);
+		printf("r%u ", rs);
+		
 		*bn += 2;
 	}
 	else if (bin[*bn + 1] == 3 && (bin[*bn] & 136) == 0) {
+		uint8_t rd = ((bin[*bn] >> 4) & 15) * 2;
+		uint8_t rs = ((bin[*bn]) & 15) * 2;
+		
 		printf("mulsu ");
-		printf("r%u, ", ((bin[*bn] >> 4) & 7) + 16);
-		printf("r%u ", ((bin[*bn]) & 7) + 16);
+		printf("r%u, ", rd);
+		printf("r%u ", rs);
+		
 		*bn += 2;
 	}
 	else if (bin[*bn + 1] == 3 && (bin[*bn] & 136) == 8) {
+		uint8_t rd = ((bin[*bn] >> 4) & 15) * 2;
+		uint8_t rs = ((bin[*bn]) & 15) * 2;
+		
 		printf("fmul ");
-		printf("r%u, ", ((bin[*bn] >> 4) & 7) + 16);
-		printf("r%u ", ((bin[*bn]) & 7) + 16);
+		printf("r%u, ", rd);
+		printf("r%u ", rs);
+		
 		*bn += 2;
 	}
 	else if (bin[*bn + 1] == 3 && (bin[*bn] & 136) == 128) {
+		uint8_t rd = ((bin[*bn] >> 4) & 15) * 2;
+		uint8_t rs = ((bin[*bn]) & 15) * 2;
+		
 		printf("fmuls ");
-		printf("r%u, ", ((bin[*bn] >> 4) & 7) + 16);
-		printf("r%u ", ((bin[*bn]) & 7) + 16);
+		printf("r%u, ", rd);
+		printf("r%u ", rs);
+		
 		*bn += 2;
 	}
 	else if (bin[*bn + 1] == 3 && (bin[*bn] & 136) == 136) {
+		uint8_t rd = ((bin[*bn] >> 4) & 15) * 2;
+		uint8_t rs = ((bin[*bn]) & 15) * 2;
+		
 		printf("fmulsu ");
-		printf("r%u, ", ((bin[*bn] >> 4) & 7) + 16);
-		printf("r%u ", ((bin[*bn]) & 7) + 16);
+		printf("r%u, ", rd);
+		printf("r%u ", rs);
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 252) == 4) {
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + ((bin[*bn + 1] << 4) & 16);
+		uint8_t rs = ((bin[*bn]) & 15) + ((bin[*bn + 1] << 3) & 16);
+		
+		printf("cp ");
+		printf("r%u, ", rd);
+		printf("r%u ", rs);
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 252) == 20) {
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + ((bin[*bn + 1] << 4) & 16);
+		uint8_t rs = ((bin[*bn]) & 15) + ((bin[*bn + 1] << 3) & 16);
+		
+		printf("cpc ");
+		printf("r%u, ", rd);
+		printf("r%u ", rs);
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 252) == 8) {
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + ((bin[*bn + 1] << 4) & 16);
+		uint8_t rs = ((bin[*bn]) & 15) + ((bin[*bn + 1] << 3) & 16);
+		
+		printf("sub ");
+		printf("r%u, ", rd);
+		printf("r%u ", rs);
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 252) == 24) {
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + ((bin[*bn + 1] << 4) & 16);
+		uint8_t rs = ((bin[*bn]) & 15) + ((bin[*bn + 1] << 3) & 16);
+		
+		printf("sbc ");
+		printf("r%u, ", rd);
+		printf("r%u ", rs);
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 252) == 12) {
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + ((bin[*bn + 1] << 4) & 16);
+		uint8_t rs = ((bin[*bn]) & 15) + ((bin[*bn + 1] << 3) & 16);
+		
+		if (rd != rs) {
+			printf("add ");
+			printf("r%u, ", rd);
+			printf("r%u ", rs);
+		}
+		else {
+			printf("lsl ");
+			printf("r%u ", rd);
+		}
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 252) == 28) {
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + ((bin[*bn + 1] << 4) & 16);
+		uint8_t rs = ((bin[*bn]) & 15) + ((bin[*bn + 1] << 3) & 16);
+		
+		if (rd != rs) {
+			printf("adc ");
+			printf("r%u, ", rd);
+			printf("r%u ", rs);
+		}
+		else {
+			printf("rol ");
+			printf("r%u ", rd);
+		}
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 252) == 16) {
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + ((bin[*bn + 1] << 4) & 16);
+		uint8_t rs = ((bin[*bn]) & 15) + ((bin[*bn + 1] << 3) & 16);
+		
+		printf("cpse ");
+		printf("r%u, ", rd);
+		printf("r%u ", rs);
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 252) == 32) {
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + ((bin[*bn + 1] << 4) & 16);
+		uint8_t rs = ((bin[*bn]) & 15) + ((bin[*bn + 1] << 3) & 16);
+		
+		printf("and ");
+		printf("r%u, ", rd);
+		printf("r%u ", rs);
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 252) == 36) {
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + ((bin[*bn + 1] << 4) & 16);
+		uint8_t rs = ((bin[*bn]) & 15) + ((bin[*bn + 1] << 3) & 16);
+		
+		printf("eor ");
+		printf("r%u, ", rd);
+		printf("r%u ", rs);
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 252) == 40) {
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + ((bin[*bn + 1] << 4) & 16);
+		uint8_t rs = ((bin[*bn]) & 15) + ((bin[*bn + 1] << 3) & 16);
+		
+		printf("or ");
+		printf("r%u, ", rd);
+		printf("r%u ", rs);
+		
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 252) == 44) {
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + ((bin[*bn + 1] << 4) & 16);
+		uint8_t rs = ((bin[*bn]) & 15) + ((bin[*bn + 1] << 3) & 16);
+		
+		printf("mov ");
+		printf("r%u, ", rd);
+		printf("r%u ", rs);
+		
 		*bn += 2;
 	}
 	else {
