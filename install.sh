@@ -1,3 +1,3 @@
 #!/bin/bash
 
-cp au /usr/bin/
+cp o /usr/bin/

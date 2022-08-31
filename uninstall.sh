@@ -1,3 +1,3 @@
 #!/bin/bash
 
-rm /usr/bin/au
+rm /usr/bin/o

@@ -39,8 +39,8 @@ void avr_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		*bn += 2;
 	}
 	else if (bin[*bn + 1] == 2) {
-		uint8_t rd = ((bin[*bn] >> 4) & 15) * 2;
-		uint8_t rs = ((bin[*bn]) & 15) * 2;
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + 16;
+		uint8_t rs = ((bin[*bn]) & 15) + 16;
 		
 		printf("muls ");
 		printf("r%u, ", rd);
@@ -221,7 +221,7 @@ void avr_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		*bn += 2;
 	}
 	else if ((bin[*bn + 1] & 240) == 48) {
-		uint8_t rd = (bin[*bn] >> 4) & 15;
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + 16;
 		uint8_t k = ((bin[*bn]) & 15) + ((bin[*bn + 1] << 4) & 240);
 		
 		printf("cpi ");
@@ -231,7 +231,7 @@ void avr_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		*bn += 2;
 	}
 	else if ((bin[*bn + 1] & 240) == 64) {
-		uint8_t rd = (bin[*bn] >> 4) & 15;
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + 16;
 		uint8_t k = ((bin[*bn]) & 15) + ((bin[*bn + 1] << 4) & 240);
 		
 		printf("subi ");
@@ -241,7 +241,7 @@ void avr_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		*bn += 2;
 	}
 	else if ((bin[*bn + 1] & 240) == 80) {
-		uint8_t rd = (bin[*bn] >> 4) & 15;
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + 16;
 		uint8_t k = ((bin[*bn]) & 15) + ((bin[*bn + 1] << 4) & 240);
 		
 		printf("sbci ");
@@ -251,7 +251,7 @@ void avr_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		*bn += 2;
 	}
 	else if ((bin[*bn + 1] & 240) == 96) {
-		uint8_t rd = (bin[*bn] >> 4) & 15;
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + 16;
 		uint8_t k = ((bin[*bn]) & 15) + ((bin[*bn + 1] << 4) & 240);
 		
 		printf("ori ");
@@ -261,7 +261,7 @@ void avr_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		*bn += 2;
 	}
 	else if ((bin[*bn + 1] & 240) == 112) {
-		uint8_t rd = (bin[*bn] >> 4) & 15;
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + 16;
 		uint8_t k = ((bin[*bn]) & 15) + ((bin[*bn + 1] << 4) & 240);
 		
 		printf("andi ");
@@ -271,7 +271,7 @@ void avr_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		*bn += 2;
 	}
 	else if ((bin[*bn + 1] & 240) == 224) {
-		uint8_t rd = (bin[*bn] >> 4) & 15;
+		uint8_t rd = ((bin[*bn] >> 4) & 15) + 16;
 		uint8_t k = ((bin[*bn]) & 15) + ((bin[*bn + 1] << 4) & 240);
 		
 		printf("ldi ");
