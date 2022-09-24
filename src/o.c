@@ -21,6 +21,7 @@
 
 #include "avr/avr.h"
 #include "arm/32a.h"
+#include "arm/32m.h"
 
 typedef struct o_sym_s {
 	int64_t str;
@@ -121,6 +122,9 @@ int8_t main(int32_t argc, int8_t** argv) {
 	}
 	else if (!strcmp(argv[1], "arm-32a")) {
 		o_dec = arm_32a_dec;
+	}
+	else if (!strcmp(argv[1], "arm-32m")) {
+		o_dec = arm_32m_dec;
 	}
 	else {
 		printf("error: unsupported architecture\n");
