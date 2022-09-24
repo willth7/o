@@ -822,7 +822,7 @@ void avr_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		*bn += 2;
 	}
 	else if (bin[*bn + 1] == 152) {
-		uint8_t b = (bin[*bn]) & 3;
+		uint8_t b = (bin[*bn]) & 7;
 		uint8_t k = (bin[*bn] >> 3) & 31;
 		
 		printf("cbi ");
@@ -832,7 +832,7 @@ void avr_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		*bn += 2;
 	}
 	else if (bin[*bn + 1] == 154) {
-		uint8_t b = (bin[*bn]) & 3;
+		uint8_t b = (bin[*bn]) & 7;
 		uint8_t k = (bin[*bn] >> 3) & 31;
 		
 		printf("sbi ");
@@ -842,7 +842,7 @@ void avr_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		*bn += 2;
 	}
 	else if (bin[*bn + 1] == 153) {
-		uint8_t b = (bin[*bn]) & 3;
+		uint8_t b = (bin[*bn]) & 7;
 		uint8_t k = (bin[*bn] >> 3) & 31;
 		
 		printf("sbic ");
@@ -852,7 +852,7 @@ void avr_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		*bn += 2;
 	}
 	else if (bin[*bn + 1] == 155) {
-		uint8_t b = (bin[*bn]) & 3;
+		uint8_t b = (bin[*bn]) & 7;
 		uint8_t k = (bin[*bn] >> 3) & 31;
 		
 		printf("sbis ");
