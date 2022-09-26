@@ -289,6 +289,141 @@ void arm_32m_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		printf("r%u ", (bin[*bn] >> 3) & 15);
 		*bn += 2;
 	}
+	else if ((bin[*bn + 1] & 248) == 72) {
+		printf("ldr ");
+		printf("r%u, ", bin[*bn + 1] & 7);
+		printf("pc, %u ", bin[*bn]);
+		*bn += 2;
+		*addr = (bin[*bn] * 4) + *bn + 2;
+	}
+	else if ((bin[*bn + 1] & 254) == 80) {
+		printf("str ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u, ", (bin[*bn] >> 3) & 7);
+		printf("r%u ", ((bin[*bn] >> 6) & 3) + ((bin[*bn + 1] << 2) & 4));
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 254) == 82) {
+		printf("strh ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u, ", (bin[*bn] >> 3) & 7);
+		printf("r%u ", ((bin[*bn] >> 6) & 3) + ((bin[*bn + 1] << 2) & 4));
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 254) == 84) {
+		printf("strb ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u, ", (bin[*bn] >> 3) & 7);
+		printf("r%u ", ((bin[*bn] >> 6) & 3) + ((bin[*bn + 1] << 2) & 4));
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 254) == 86) {
+		printf("ldrsb ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u, ", (bin[*bn] >> 3) & 7);
+		printf("r%u ", ((bin[*bn] >> 6) & 3) + ((bin[*bn + 1] << 2) & 4));
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 254) == 88) {
+		printf("ldr ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u, ", (bin[*bn] >> 3) & 7);
+		printf("r%u ", ((bin[*bn] >> 6) & 3) + ((bin[*bn + 1] << 2) & 4));
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 254) == 90) {
+		printf("ldrh ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u, ", (bin[*bn] >> 3) & 7);
+		printf("r%u ", ((bin[*bn] >> 6) & 3) + ((bin[*bn + 1] << 2) & 4));
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 254) == 92) {
+		printf("ldrb ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u, ", (bin[*bn] >> 3) & 7);
+		printf("r%u ", ((bin[*bn] >> 6) & 3) + ((bin[*bn + 1] << 2) & 4));
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 254) == 94) {
+		printf("ldrsh ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u, ", (bin[*bn] >> 3) & 7);
+		printf("r%u ", ((bin[*bn] >> 6) & 3) + ((bin[*bn + 1] << 2) & 4));
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 248) == 96) {
+		printf("str ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u, ", (bin[*bn] >> 3) & 7);
+		printf("%u ", ((bin[*bn] >> 6) & 3) + ((bin[*bn + 1] << 2) & 28));
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 248) == 104) {
+		printf("ldr ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u, ", (bin[*bn] >> 3) & 7);
+		printf("%u ", ((bin[*bn] >> 6) & 3) + ((bin[*bn + 1] << 2) & 28));
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 248) == 112) {
+		printf("strb ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u, ", (bin[*bn] >> 3) & 7);
+		printf("%u ", ((bin[*bn] >> 6) & 3) + ((bin[*bn + 1] << 2) & 28));
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 248) == 120) {
+		printf("ldrb ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u, ", (bin[*bn] >> 3) & 7);
+		printf("%u ", ((bin[*bn] >> 6) & 3) + ((bin[*bn + 1] << 2) & 28));
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 248) == 128) {
+		printf("strh ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u, ", (bin[*bn] >> 3) & 7);
+		printf("%u ", ((bin[*bn] >> 6) & 3) + ((bin[*bn + 1] << 2) & 28));
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 248) == 136) {
+		printf("ldrh ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u, ", (bin[*bn] >> 3) & 7);
+		printf("%u ", ((bin[*bn] >> 6) & 3) + ((bin[*bn + 1] << 2) & 28));
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 248) == 144) {
+		printf("str ");
+		printf("r%u, ", bin[*bn + 1] & 7);
+		printf("sp, %u ", bin[*bn]);
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 248) == 152) {
+		printf("ldr ");
+		printf("r%u, ", bin[*bn + 1] & 7);
+		printf("sp, %u ", bin[*bn]);
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 248) == 160) {
+		printf("adr ");
+		printf("r%u, ", bin[*bn + 1] & 7);
+		printf("pc, %u ", bin[*bn]);
+		*bn += 2;
+		*addr = (bin[*bn] * 4) + *bn + 2;
+	}
+	else if ((bin[*bn + 1] & 248) == 168) {
+		printf("add ");
+		printf("r%u, ", bin[*bn + 1] & 7);
+		printf("sp, %u ", bin[*bn]);
+		*bn += 2;
+	}
+	else if (bin[*bn + 1] == 176 && (bin[*bn] & 128) == 0) {
+		printf("add ");
+		printf("sp, sp, %u ", bin[*bn]);
+		*bn += 2;
+	}
 	else {
 		printf("~byte %hhu", bin[*bn]);
 		*bn += 2;

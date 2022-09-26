@@ -48,7 +48,7 @@ void o_dasm(uint8_t* bin, uint64_t bn, o_sym_t* sym, uint64_t symn, int8_t* e) {
 		if (addr != (uint64_t) -1) {
 			for (uint64_t i = 0; i < symn; i++) {
 				if (sym[i].addr == addr) {
-					printf("(%s)", (int8_t*) &(sym[i].str));
+					printf("; *%s", (int8_t*) &(sym[i].str));
 				}
 			}
 		}
