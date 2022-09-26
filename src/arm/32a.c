@@ -434,7 +434,6 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 			printf("mov%s ", arm_32a_c4(bin[*bn + 3] >> 4));
 		}
 		printf("r%u, ", bin[*bn + 1] >> 4);
-		printf("r%u, ", bin[*bn + 2] & 15);
 		
 		if (bin[*bn + 3] & 2) {
 			printf("%u ", bin[*bn] + ((bin[*bn + 1] & 15) << 8));
@@ -578,7 +577,7 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		*bn += 4;
 	}
 	else {
-		printf("~byte %hhu", bin[*bn]);
-		*bn += 1;
+		printf("~byt4 %hhu", bin[*bn]);
+		*bn += 4;
 	}
 }

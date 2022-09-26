@@ -86,38 +86,207 @@ void arm_32m_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 	printf("%04lx %04lx    ", (*bn >> 16) & 65535, (*bn) & 65535); //address
 	printf("%02x %02x    ", bin[*bn + 1], bin[*bn]); //machine code
 	
-	if ((bin[*bn + 1] & 224) != 224 && (bin[*bn + 1] & 248) == 0 && !(((bin[*bn] >> 6) & 3) + ((bin[*bn] << 2) & 28))) {
+	if ((bin[*bn + 1] & 248) == 0 && !(((bin[*bn] >> 6) & 3) + ((bin[*bn] << 2) & 28))) {
 		printf("mov ");
 		printf("r%u, ", bin[*bn] & 7);
 		printf("r%u ", (bin[*bn] >> 3) & 7);
 		*bn += 2;
 	}
-	else if ((bin[*bn + 1] & 224) != 224 && (bin[*bn + 1] & 248) == 0) {
+	else if ((bin[*bn + 1] & 248) == 0) {
 		printf("lsl ");
 		printf("r%u, ", bin[*bn] & 7);
 		printf("r%u, ", (bin[*bn] >> 3) & 7);
-		printf("%hhu ", ((bin[*bn] >> 6) & 3) + ((bin[*bn] << 2) & 28));
+		printf("%u ", ((bin[*bn] >> 6) & 3) + ((bin[*bn + 1] << 2) & 28));
 		*bn += 2;
 	}
-	else if ((bin[*bn + 1] & 224) != 224 && (bin[*bn + 1] & 248) == 8) {
+	else if ((bin[*bn + 1] & 248) == 8) {
 		printf("lsr ");
 		printf("r%u, ", bin[*bn] & 7);
 		printf("r%u, ", (bin[*bn] >> 3) & 7);
-		printf("%hhu ", ((bin[*bn] >> 6) & 3) + ((bin[*bn] << 2) & 28));
+		printf("%u ", ((bin[*bn] >> 6) & 3) + ((bin[*bn + 1] << 2) & 28));
 		*bn += 2;
 	}
-	else if ((bin[*bn + 1] & 224) != 224 && (bin[*bn + 1] & 248) == 16) {
+	else if ((bin[*bn + 1] & 248) == 16) {
 		printf("asr ");
 		printf("r%u, ", bin[*bn] & 7);
 		printf("r%u, ", (bin[*bn] >> 3) & 7);
-		printf("%hhu ", ((bin[*bn] >> 6) & 3) + ((bin[*bn] << 2) & 28));
+		printf("%u ", ((bin[*bn] >> 6) & 3) + ((bin[*bn + 1] << 2) & 28));
 		*bn += 2;
 	}
-	else if ((bin[*bn + 1] & 224) != 224 && (bin[*bn + 1] & 254) == 24) {
+	else if ((bin[*bn + 1] & 254) == 24) {
 		printf("add ");
 		printf("r%u, ", bin[*bn] & 7);
 		printf("r%u, ", (bin[*bn] >> 3) & 7);
-		printf("r%u ", ((bin[*bn] >> 6) & 3) + ((bin[*bn] << 2) & 4));
+		printf("r%u ", ((bin[*bn] >> 6) & 3) + ((bin[*bn + 1] << 2) & 4));
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 254) == 26) {
+		printf("sub ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u, ", (bin[*bn] >> 3) & 7);
+		printf("r%u ", ((bin[*bn] >> 6) & 3) + ((bin[*bn + 1] << 2) & 4));
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 254) == 28) {
+		printf("add ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u, ", (bin[*bn] >> 3) & 7);
+		printf("%u ", ((bin[*bn] >> 6) & 3) + ((bin[*bn + 1] << 2) & 4));
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 254) == 30) {
+		printf("sub ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u, ", (bin[*bn] >> 3) & 7);
+		printf("%u ", ((bin[*bn] >> 6) & 3) + ((bin[*bn + 1] << 2) & 4));
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 248) == 32) {
+		printf("mov ");
+		printf("r%u, ", bin[*bn + 1] & 7);
+		printf("%u ", bin[*bn]);
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 248) == 40) {
+		printf("cmp ");
+		printf("r%u, ", bin[*bn + 1] & 7);
+		printf("%u ", bin[*bn]);
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 248) == 48) {
+		printf("add ");
+		printf("r%u, ", bin[*bn + 1] & 7);
+		printf("%u ", bin[*bn]);
+		*bn += 2;
+	}
+	else if ((bin[*bn + 1] & 248) == 56) {
+		printf("sub ");
+		printf("r%u, ", bin[*bn + 1] & 7);
+		printf("%u ", bin[*bn]);
+		*bn += 2;
+	}
+	else if (bin[*bn + 1] == 64 && (bin[*bn] & 192) == 0) {
+		printf("and ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u ", (bin[*bn] >> 3) & 7);
+		*bn += 2;
+	}
+	else if (bin[*bn + 1] == 64 && (bin[*bn] & 192) == 64) {
+		printf("eor ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u ", (bin[*bn] >> 3) & 7);
+		*bn += 2;
+	}
+	else if (bin[*bn + 1] == 64 && (bin[*bn] & 192) == 128) {
+		printf("lsl ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u ", (bin[*bn] >> 3) & 7);
+		*bn += 2;
+	}
+	else if (bin[*bn + 1] == 64 && (bin[*bn] & 192) == 192) {
+		printf("lsr ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u ", (bin[*bn] >> 3) & 7);
+		*bn += 2;
+	}
+	else if (bin[*bn + 1] == 65 && (bin[*bn] & 192) == 0) {
+		printf("asr ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u ", (bin[*bn] >> 3) & 7);
+		*bn += 2;
+	}
+	else if (bin[*bn + 1] == 65 && (bin[*bn] & 192) == 64) {
+		printf("adc ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u ", (bin[*bn] >> 3) & 7);
+		*bn += 2;
+	}
+	else if (bin[*bn + 1] == 65 && (bin[*bn] & 192) == 128) {
+		printf("sbc ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u ", (bin[*bn] >> 3) & 7);
+		*bn += 2;
+	}
+	else if (bin[*bn + 1] == 65 && (bin[*bn] & 192) == 192) {
+		printf("ror ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u ", (bin[*bn] >> 3) & 7);
+		*bn += 2;
+	}
+	else if (bin[*bn + 1] == 66 && (bin[*bn] & 192) == 0) {
+		printf("tst ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u ", (bin[*bn] >> 3) & 7);
+		*bn += 2;
+	}
+	else if (bin[*bn + 1] == 66 && (bin[*bn] & 192) == 64) {
+		printf("rsb ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u ", (bin[*bn] >> 3) & 7);
+		*bn += 2;
+	}
+	else if (bin[*bn + 1] == 66 && (bin[*bn] & 192) == 128) {
+		printf("cmp ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u ", (bin[*bn] >> 3) & 7);
+		*bn += 2;
+	}
+	else if (bin[*bn + 1] == 66 && (bin[*bn] & 192) == 192) {
+		printf("cmn ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u ", (bin[*bn] >> 3) & 7);
+		*bn += 2;
+	}
+	else if (bin[*bn + 1] == 67 && (bin[*bn] & 192) == 0) {
+		printf("orr ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u ", (bin[*bn] >> 3) & 7);
+		*bn += 2;
+	}
+	else if (bin[*bn + 1] == 67 && (bin[*bn] & 192) == 64) {
+		printf("mul ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u ", (bin[*bn] >> 3) & 7);
+		*bn += 2;
+	}
+	else if (bin[*bn + 1] == 67 && (bin[*bn] & 192) == 128) {
+		printf("bic ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u ", (bin[*bn] >> 3) & 7);
+		*bn += 2;
+	}
+	else if (bin[*bn + 1] == 67 && (bin[*bn] & 192) == 192) {
+		printf("mvn ");
+		printf("r%u, ", bin[*bn] & 7);
+		printf("r%u ", (bin[*bn] >> 3) & 7);
+		*bn += 2;
+	}
+	else if (bin[*bn + 1] == 68) {
+		printf("add ");
+		printf("r%u, ", (bin[*bn] & 7) + ((bin[*bn] >> 4) & 8));
+		printf("r%u ", (bin[*bn] >> 3) & 15);
+		*bn += 2;
+	}
+	else if (bin[*bn + 1] == 69) {
+		printf("cmp ");
+		printf("r%u, ", (bin[*bn] & 7) + ((bin[*bn] >> 4) & 8));
+		printf("r%u ", (bin[*bn] >> 3) & 15);
+		*bn += 2;
+	}
+	else if (bin[*bn + 1] == 70) {
+		printf("mov ");
+		printf("r%u, ", (bin[*bn] & 7) + ((bin[*bn] >> 4) & 8));
+		printf("r%u ", (bin[*bn] >> 3) & 15);
+		*bn += 2;
+	}
+	else if (bin[*bn + 1] == 71 && (bin[*bn] & 128) == 0) {
+		printf("bx ");
+		printf("r%u ", (bin[*bn] >> 3) & 15);
+		*bn += 2;
+	}
+	else if (bin[*bn + 1] == 71 && (bin[*bn] & 128) == 128) {
+		printf("blx ");
+		printf("r%u ", (bin[*bn] >> 3) & 15);
 		*bn += 2;
 	}
 	else {
