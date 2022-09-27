@@ -577,7 +577,7 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		*bn += 4;
 	}
 	else {
-		printf("~byt4 %hhu", bin[*bn]);
+		printf("~byt4 %u", bin[*bn]);
 		*bn += 4;
 	}
 }
