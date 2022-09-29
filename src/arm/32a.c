@@ -442,13 +442,13 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		printf(" ");
 		*bn += 4;
 	}
-	else if ((bin[*bn + 3] & 15) == 10) {
+	else if ((bin[*bn + 3] & 15) == 10) { //todo
 		printf("b%s ", arm_32a_c4(bin[*bn + 3] >> 4));
 		printf("%u ", (uint32_t) (bin[*bn] + (bn[*bn + 1] << 8) + (bin[*bn + 2] << 16)));
 		*bn += 4;
 		*addr = ((bin[*bn] + (bn[*bn + 1] << 8) + (bin[*bn + 2] << 16)) * 4) + *bn + 8;
 	}
-	else if ((bin[*bn + 3] & 15) == 11) {
+	else if ((bin[*bn + 3] & 15) == 11) { //todo
 		printf("bl%s ", arm_32a_c4(bin[*bn + 3] >> 4));
 		printf("%u ", (uint32_t) (bin[*bn] + (bn[*bn + 1] << 8) + (bin[*bn + 2] << 16)));
 		*bn += 4;
