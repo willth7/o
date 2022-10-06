@@ -120,11 +120,17 @@ int8_t main(int32_t argc, int8_t** argv) {
 	if (!strcmp(argv[1], "avr")) {
 		o_dec = avr_dec;
 	}
-	else if (!strcmp(argv[1], "arm-32a")) {
+	else if (!strcmp(argv[1], "aarch32-a")) {
 		o_dec = arm_32a_dec;
 	}
-	else if (!strcmp(argv[1], "arm-32m")) {
+	else if (!strcmp(argv[1], "aarch32-m")) {
 		o_dec = arm_32m_dec;
+	}
+	else if (!strcmp(argv[1], "aarch64")) {
+		//o_dec = arm_64_dec; todo
+	}
+	else if (!strcmp(argv[1], "x86-64")) {
+		//o_dec = x86_dec; todo
 	}
 	else {
 		printf("error: unsupported architecture\n");
