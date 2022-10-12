@@ -19,9 +19,12 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "avr/avr.h"
 #include "arm/32a.h"
 #include "arm/32m.h"
+#include "arm/64.h"
+#include "x86/x86.h"
+#include "x86/i386.h"
+#include "x86/x64.h"
 
 typedef struct o_sym_s {
 	int64_t str;
@@ -117,20 +120,23 @@ int8_t main(int32_t argc, int8_t** argv) {
 		return -1;
 	}
 	
-	if (!strcmp(argv[1], "avr")) {
-		o_dec = avr_dec;
-	}
-	else if (!strcmp(argv[1], "aarch32-a")) {
+	if (!strcmp(argv[1], "aarch32-a")) {
 		o_dec = arm_32a_dec;
 	}
 	else if (!strcmp(argv[1], "aarch32-m")) {
 		o_dec = arm_32m_dec;
 	}
 	else if (!strcmp(argv[1], "aarch64")) {
-		//o_dec = arm_64_dec; todo
+		o_dec = arm_64_dec;
+	}
+	else if (!strcmp(argv[1], "x86")) {
+		o_dec = x86_dec;
+	}
+	else if (!strcmp(argv[1], "i386")) {
+		o_dec = i386_dec;
 	}
 	else if (!strcmp(argv[1], "x86-64")) {
-		//o_dec = x86_dec; todo
+		o_dec = x86_64_dec;
 	}
 	else {
 		printf("error: unsupported architecture\n");

@@ -14,4 +14,11 @@
 
 //   gloria in excelsis deo
 
-void avr_dec(uint8_t*, uint64_t*, uint64_t*);
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
+void i386_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
+	
+}
