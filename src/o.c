@@ -1,4 +1,4 @@
-//   Copyright 2022 Will Thomas
+//   Copyright 2025 Will Thomas
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -12,12 +12,17 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-//   gloria in excelsis deo
+//   sub umbra alarum suarum
 
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <stdio.h>
+
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
 
 #include "arm/32a.h"
 #include "arm/32m.h"
@@ -26,17 +31,18 @@
 #include "x86/i386.h"
 #include "x86/x64.h"
 
-typedef struct o_sym_s {
-	int64_t str;
+struct o_sym_s {
+	uint8_t* str;
+	uint8_t len;
 	uint64_t addr;
 	uint8_t typ;
-} o_sym_t;
+};
 
-void (*o_read) (uint8_t*, uint64_t*, o_sym_t*, uint64_t*, int8_t*, int8_t*);
+void (*o_read) (uint8_t*, uint64_t*, struct o_sym_s*, uint64_t*, int8_t*, int8_t*);
 
 void (*o_dec) (uint8_t*, uint64_t*, uint64_t*);
 
-void o_dasm(uint8_t* bin, uint64_t bn, o_sym_t* sym, uint64_t symn, int8_t* e) {
+void o_dasm(uint8_t* bin, uint64_t bn, struct o_sym_s* sym, uint64_t symn, int8_t* e) {
 	uint64_t bi = 0;
 	while (bi < bn) {
 		for (uint64_t i = 0; i < symn; i++) {
@@ -59,7 +65,7 @@ void o_dasm(uint8_t* bin, uint64_t bn, o_sym_t* sym, uint64_t symn, int8_t* e) {
 	}
 }
 
-void o_read_bin(uint8_t* bin, uint64_t* bn, o_sym_t* sym, uint64_t* symn,int8_t* path, int8_t* e) {
+void o_read_bin(uint8_t* bin, uint64_t* bn, struct o_sym_s* sym, uint64_t* symn,int8_t* path, int8_t* e) {
 	FILE* f = fopen(path, "r");
 	if (!f) {
 		printf("[%s] error: file doesn't exist\n", path);
@@ -77,25 +83,25 @@ void o_read_bin(uint8_t* bin, uint64_t* bn, o_sym_t* sym, uint64_t* symn,int8_t*
 	*bn = fn;
 }
 
-void o_read_zn(uint8_t* bin, uint64_t* bn, o_sym_t* sym, uint64_t* symn,int8_t* path, int8_t* e) {
-	FILE* f = fopen(path, "r");
-	if (!f) {
-		printf("[%s] error: file doesn't exist\n", path);
+void o_read_zn(uint8_t* bin, uint64_t* bn, struct o_sym_s* sym, uint64_t* symn, int8_t* path, int8_t* e) {
+	int32_t fd = open(path, O_RDONLY);
+    if (fd == -1) {
+        printf("error: failed to open file '%s'\n", path);
 		*e = -1;
-		return;
-	}
-	fseek(f, 0, SEEK_END);
-	uint64_t fn = ftell(f);
-	uint8_t* fx = malloc(fn);
-	fseek(f, 0, SEEK_SET);
-	fread(fx, fn, 1, f);
-	fclose(f);
+        return;
+    }
+	
+    struct stat fs;
+    fstat(fd, &fs);
+	
+    uint8_t* fx = mmap(0, fs.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
+    close(fd);
 	
 	uint32_t mag = *((uint32_t*) fx);
 	uint64_t binoff = *((uint64_t*) (fx + 4));
-	*bn = *((uint64_t*) (fx + 12));
+	uint64_t binnum = *((uint64_t*) (fx + 12));
 	uint64_t symoff = *((uint64_t*) (fx + 20));
-	*symn = *((uint64_t*) (fx + 28));
+	uint64_t symnum = *((uint64_t*) (fx + 28));
 	
 	if (mag != 1668180346) {
 		printf("[%s] error: corrupted file\n", path);
@@ -103,15 +109,27 @@ void o_read_zn(uint8_t* bin, uint64_t* bn, o_sym_t* sym, uint64_t* symn,int8_t* 
 		return;
 	}
 	
-	memcpy(bin, fx + binoff, *bn);
+	memcpy(bin + *bn, fx + binoff, binnum);
 	
-	for (uint64_t i = 0; i < *symn; i++) {
-		sym[i].str = *((uint64_t*) (fx + symoff + (17 * i)));
-		sym[i].addr = *((uint64_t*) (fx + symoff + (17 * i) + 8));
-		sym[i].typ = *(fx + symoff + (17 * i) + 16);
+	for (uint64_t i = 0; i < symnum; i++) {
+		sym[i + *symn].len = *((uint8_t*) (fx + symoff + (18 * i) + 8));
+		sym[i + *symn].addr = *((uint64_t*) (fx + symoff + (18 * i) + 9)) + *bn;
+		sym[i + *symn].typ = *(fx + symoff + (18 * i) + 17);
+		
+		uint64_t stroff = *((uint64_t*) (fx + symoff + (18 * i)));
+		sym[i + *symn].str = malloc(sym[i + *symn].len);
+		memcpy(sym[i + *symn].str, fx + stroff, sym[i + *symn].len);
+		for (uint64_t j = 0; j < *symn; j++) {
+			if (!strcmp(sym[i].str, sym[j].str)) {
+				printf("[%s] error: symbol '%s' already defined\n", path, sym[i + *symn].str);
+				*e = -1;
+			}
+		}
 	}
+	*bn += binnum;
+	*symn += symnum;
 	
-	free(fx);
+	munmap(fx, fs.st_size);
 }
 
 int8_t main(int32_t argc, int8_t** argv) {
@@ -155,7 +173,7 @@ int8_t main(int32_t argc, int8_t** argv) {
 	
 	uint8_t* bin = calloc(1000, 1);
 	uint64_t bn = 0;
-	o_sym_t* sym = calloc(1000, 1);
+	struct o_sym_s* sym = calloc(1000, 1);
 	uint64_t symn = 0;
 	
 	int8_t e = 0;
