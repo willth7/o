@@ -47,7 +47,7 @@ void o_dasm(uint8_t* bin, uint64_t bn, struct o_sym_s* sym, uint64_t symn, int8_
 	while (bi < bn) {
 		for (uint64_t i = 0; i < symn; i++) {
 			if (sym[i].addr == bi) {
-				printf("(%s)\n", (int8_t*) &(sym[i].str));
+				printf("(%s)\n", sym[i].str);
 			}
 		}
 		
@@ -57,7 +57,7 @@ void o_dasm(uint8_t* bin, uint64_t bn, struct o_sym_s* sym, uint64_t symn, int8_
 		if (addr != (uint64_t) -1) {
 			for (uint64_t i = 0; i < symn; i++) {
 				if (sym[i].addr == addr) {
-					printf("; *%s", (int8_t*) &(sym[i].str));
+					printf("; *%s", sym[i].str);
 				}
 			}
 		}
@@ -119,12 +119,6 @@ void o_read_zn(uint8_t* bin, uint64_t* bn, struct o_sym_s* sym, uint64_t* symn, 
 		uint64_t stroff = *((uint64_t*) (fx + symoff + (18 * i)));
 		sym[i + *symn].str = malloc(sym[i + *symn].len);
 		memcpy(sym[i + *symn].str, fx + stroff, sym[i + *symn].len);
-		for (uint64_t j = 0; j < *symn; j++) {
-			if (!strcmp(sym[i].str, sym[j].str)) {
-				printf("[%s] error: symbol '%s' already defined\n", path, sym[i + *symn].str);
-				*e = -1;
-			}
-		}
 	}
 	*bn += binnum;
 	*symn += symnum;
