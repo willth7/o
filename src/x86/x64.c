@@ -1430,6 +1430,21 @@ void x86_64_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		eo = x86_64_dec_shft(bin, bn, addr, 0, "rol", lga, lgo, rex, rx0, rx1, rx2, rx3);
 	}
 	if (eo) {
+		eo = x86_64_dec_shft(bin, bn, addr, 1, "ror", lga, lgo, rex, rx0, rx1, rx2, rx3);
+	}
+	if (eo) {
+		eo = x86_64_dec_shft(bin, bn, addr, 2, "rcl", lga, lgo, rex, rx0, rx1, rx2, rx3);
+	}
+	if (eo) {
+		eo = x86_64_dec_shft(bin, bn, addr, 3, "rcr", lga, lgo, rex, rx0, rx1, rx2, rx3);
+	}
+	if (eo) {
+		eo = x86_64_dec_shft(bin, bn, addr, 4, "shl", lga, lgo, rex, rx0, rx1, rx2, rx3);
+	}
+	if (eo) {
+		eo = x86_64_dec_shft(bin, bn, addr, 5, "shr", lga, lgo, rex, rx0, rx1, rx2, rx3);
+	}
+	if (eo) {
 		printf("%02x ", bin[*bn]);
 		*bn += 1;
 	}
