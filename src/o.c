@@ -26,7 +26,6 @@
 
 #include "arm/32a.h"
 #include "arm/32m.h"
-#include "arm/64.h"
 #include "x86/x86.h"
 #include "x86/i386.h"
 #include "x86/x64.h"
@@ -132,14 +131,11 @@ int8_t main(int32_t argc, int8_t** argv) {
 		return -1;
 	}
 	
-	if (!strcmp(argv[1], "aarch32-a")) {
+	if (!strcmp(argv[1], "arm32-a")) {
 		o_dec = arm_32a_dec;
 	}
-	else if (!strcmp(argv[1], "aarch32-m")) {
+	else if (!strcmp(argv[1], "arm32-m")) {
 		o_dec = arm_32m_dec;
-	}
-	else if (!strcmp(argv[1], "aarch64")) {
-		o_dec = arm_64_dec;
 	}
 	else if (!strcmp(argv[1], "x86")) {
 		o_dec = x86_dec;
