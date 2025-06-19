@@ -897,7 +897,7 @@ uint8_t x86_64_dec_64r(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, i
 				}
 				else if (i == 4) {
 					*bn += 1;
-					printf("                  %s %s, (%s) ", mn, x86_64_r64(mrs), x86_64_r64(b));
+					printf("                      %s %s, (%s) ", mn, x86_64_r64(mrs), x86_64_r64(b));
 				}
 				else {
 					*bn += 1;
