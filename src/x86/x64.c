@@ -488,7 +488,7 @@ uint8_t x86_64_dec_32r(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, i
 				}
 				else {
 					*bn += 1;
-					printf("    %s (%s, %s), %s ", mn, x86_64_r32(b), x86_64_r32(i), x86_64_r32(mrs));
+					printf("    %s (%s, (%s)), %s ", mn, x86_64_r32(b), x86_64_r32(i), x86_64_r32(mrs));
 				}
 			}
 			else if ((mrd & 7) == 5) {
@@ -518,7 +518,7 @@ uint8_t x86_64_dec_32r(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, i
 				}
 				else {
 					*bn += 1;
-					printf("    %s (%s, %s), %s ", mn, x86_64_r32(b), x86_64_r32(i), x86_64_r32(mrs));
+					printf("    %s (%s, (%s)), %s ", mn, x86_64_r32(b), x86_64_r32(i), x86_64_r32(mrs));
 				}
 			}
 		}
@@ -540,7 +540,7 @@ uint8_t x86_64_dec_32r(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, i
 					printf("%02x ", bin[*bn]);
 					uint8_t d = bin[*bn];
 					*bn += 1;
-					printf("    %s (%s, %s, %u), %s ", mn, x86_64_r32(b), x86_64_r32(i), d, x86_64_r32(mrs));
+					printf("    %s (%s, (%s), %u), %s ", mn, x86_64_r32(b), x86_64_r32(i), d, x86_64_r32(mrs));
 				}
 			}
 			else {
@@ -569,7 +569,7 @@ uint8_t x86_64_dec_32r(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, i
 					printf("%02x %02x %02x %02x ", bin[*bn], bin[*bn + 1], bin[*bn + 2], bin[*bn + 3]);
 					uint32_t d = bin[*bn] + (bin[*bn + 1] << 8) + (bin[*bn + 2] << 16) + (bin[*bn + 3] << 24);
 					*bn += 4;
-					printf("    %s (%s, %s, %u), %s ", mn, x86_64_r32(b), x86_64_r32(i), d, x86_64_r32(mrs));
+					printf("    %s (%s, (%s), %u), %s ", mn, x86_64_r32(b), x86_64_r32(i), d, x86_64_r32(mrs));
 				}
 			}
 			else {
@@ -606,7 +606,7 @@ uint8_t x86_64_dec_32r(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, i
 				}
 				else {
 					*bn += 1;
-					printf("    %s %s, (%s, %s) ", mn, x86_64_r32(mrs), x86_64_r32(b), x86_64_r32(i));
+					printf("    %s %s, (%s, (%s)) ", mn, x86_64_r32(mrs), x86_64_r32(b), x86_64_r32(i));
 				}
 			}
 			else if ((mrd & 7) == 5) {
@@ -636,7 +636,7 @@ uint8_t x86_64_dec_32r(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, i
 				}
 				else {
 					*bn += 1;
-					printf("    %s %s, (%s, %s) ", mn, x86_64_r32(mrs), x86_64_r32(b), x86_64_r32(i));
+					printf("    %s %s, (%s, (%s)) ", mn, x86_64_r32(mrs), x86_64_r32(b), x86_64_r32(i));
 				}
 			}
 		}
@@ -658,7 +658,7 @@ uint8_t x86_64_dec_32r(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, i
 					printf("%02x ", bin[*bn]);
 					uint8_t d = bin[*bn];
 					*bn += 1;
-					printf("    %s %s, (%s, %s, %u) ", mn, x86_64_r32(mrs), x86_64_r32(b), x86_64_r32(i), d);
+					printf("    %s %s, (%s, (%s), %u) ", mn, x86_64_r32(mrs), x86_64_r32(b), x86_64_r32(i), d);
 				}
 			}
 			else {
@@ -687,7 +687,7 @@ uint8_t x86_64_dec_32r(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, i
 					printf("%02x %02x %02x %02x ", bin[*bn], bin[*bn + 1], bin[*bn + 2], bin[*bn + 3]);
 					uint32_t d = bin[*bn] + (bin[*bn + 1] << 8) + (bin[*bn + 2] << 16) + (bin[*bn + 3] << 24);
 					*bn += 4;
-					printf("    %s %s, (%s, %s, %u) ", mn, x86_64_r32(mrs), x86_64_r32(b), x86_64_r32(i), d);
+					printf("    %s %s, (%s, (%s), %u) ", mn, x86_64_r32(mrs), x86_64_r32(b), x86_64_r32(i), d);
 				}
 			}
 			else {
@@ -795,7 +795,7 @@ uint8_t x86_64_dec_64r(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, i
 				}
 				else {
 					*bn += 1;
-					printf("                  %s (%s, %s), %s ", mn, x86_64_r64(b), x86_64_r64(i), x86_64_r64(mrs));
+					printf("                      %s (%s, (%s)), %s ", mn, x86_64_r64(b), x86_64_r64(i), x86_64_r64(mrs));
 				}
 			}
 			else if ((mrd & 7) == 5) {
@@ -828,7 +828,7 @@ uint8_t x86_64_dec_64r(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, i
 					printf("%02x ", bin[*bn]);
 					uint8_t d = bin[*bn];
 					*bn += 1;
-					printf("                   %s (%s, %s, %u), %s ", mn, x86_64_r64(b), x86_64_r64(i), d, x86_64_r64(mrs));
+					printf("                   %s (%s, (%s), %u), %s ", mn, x86_64_r64(b), x86_64_r64(i), d, x86_64_r64(mrs));
 				}
 			}
 			else {
@@ -857,7 +857,7 @@ uint8_t x86_64_dec_64r(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, i
 					printf("%02x %02x %02x %02x ", bin[*bn], bin[*bn + 1], bin[*bn + 2], bin[*bn + 3]);
 					uint32_t d = bin[*bn] + (bin[*bn + 1] << 8) + (bin[*bn + 2] << 16) + (bin[*bn + 3] << 24);
 					*bn += 4;
-					printf("             %s (%s, %s, %u), %s ", mn, x86_64_r64(b), x86_64_r64(i), d, x86_64_r64(mrs));
+					printf("             %s (%s, (%s), %u), %s ", mn, x86_64_r64(b), x86_64_r64(i), d, x86_64_r64(mrs));
 				}
 			}
 			else {
@@ -901,7 +901,7 @@ uint8_t x86_64_dec_64r(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, i
 				}
 				else {
 					*bn += 1;
-					printf("                  %s %s, (%s, %s) ", mn, x86_64_r64(mrs), x86_64_r64(b), x86_64_r64(i));
+					printf("                      %s %s, (%s, (%s)) ", mn, x86_64_r64(mrs), x86_64_r64(b), x86_64_r64(i));
 				}
 			}
 			else if ((mrd & 7) == 5) {
@@ -934,7 +934,7 @@ uint8_t x86_64_dec_64r(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, i
 					printf("%02x ", bin[*bn]);
 					uint8_t d = bin[*bn];
 					*bn += 1;
-					printf("                  %s %s, (%s, %s, %u) ", mn, x86_64_r64(mrs), x86_64_r64(b), x86_64_r64(i), d);
+					printf("                   %s %s, (%s, (%s), %u) ", mn, x86_64_r64(mrs), x86_64_r64(b), x86_64_r64(i), d);
 				}
 			}
 			else {
@@ -963,7 +963,7 @@ uint8_t x86_64_dec_64r(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, i
 					printf("%02x %02x %02x %02x ", bin[*bn], bin[*bn + 1], bin[*bn + 2], bin[*bn + 3]);
 					uint32_t d = bin[*bn] + (bin[*bn + 1] << 8) + (bin[*bn + 2] << 16) + (bin[*bn + 3] << 24);
 					*bn += 4;
-					printf("        %s %s, (%s, %s, %u) ", mn, x86_64_r64(mrs), x86_64_r64(b), x86_64_r64(i), d);
+					printf("        %s %s, (%s, (%s), %u) ", mn, x86_64_r64(mrs), x86_64_r64(b), x86_64_r64(i), d);
 				}
 			}
 			else {
@@ -1133,7 +1133,7 @@ uint8_t x86_64_dec_mov(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, i
 				}
 				else {
 					*bn += 1;
-					printf("                  %s (%s, %s), %s ", mn, x86_64_r64(b), x86_64_r64(i), x86_64_r64(mrs));
+					printf("                  %s (%s, (%s)), %s ", mn, x86_64_r64(b), x86_64_r64(i), x86_64_r64(mrs));
 				}
 			}
 			else if ((mrd & 7) == 5) {
@@ -1166,7 +1166,7 @@ uint8_t x86_64_dec_mov(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, i
 					printf("%02x ", bin[*bn]);
 					uint8_t d = bin[*bn];
 					*bn += 1;
-					printf("                 %s (%s, %s, %u), %s ", mn, x86_64_r64(b), x86_64_r64(i), d, x86_64_r64(mrs));
+					printf("                 %s (%s, (%s), %u), %s ", mn, x86_64_r64(b), x86_64_r64(i), d, x86_64_r64(mrs));
 				}
 			}
 			else {
@@ -1195,7 +1195,7 @@ uint8_t x86_64_dec_mov(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, i
 					printf("%02x %02x %02x %02x ", bin[*bn], bin[*bn + 1], bin[*bn + 2], bin[*bn + 3]);
 					uint32_t d = bin[*bn] + (bin[*bn + 1] << 8) + (bin[*bn + 2] << 16) + (bin[*bn + 3] << 24);
 					*bn += 4;
-					printf("        %s (%s, %s, %u), %s ", mn, x86_64_r64(b), x86_64_r64(i), d, x86_64_r64(mrs));
+					printf("        %s (%s, (%s), %u), %s ", mn, x86_64_r64(b), x86_64_r64(i), d, x86_64_r64(mrs));
 				}
 			}
 			else {
@@ -1246,7 +1246,7 @@ uint8_t x86_64_dec_lea(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, i
 				}
 				else {
 					*bn += 1;
-					printf("                  %s %s, (%s, %s) ", mn, x86_64_r64(mrs), x86_64_r64(b), x86_64_r64(i));
+					printf("                  %s %s, (%s, (%s)) ", mn, x86_64_r64(mrs), x86_64_r64(b), x86_64_r64(i));
 				}
 			}
 			else if ((mrd & 7) == 5) {
@@ -1279,7 +1279,7 @@ uint8_t x86_64_dec_lea(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, i
 					printf("%02x ", bin[*bn]);
 					uint8_t d = bin[*bn];
 					*bn += 1;
-					printf("                   %s %s, (%s, %s, %u) ", mn, x86_64_r64(mrs), x86_64_r64(b), x86_64_r64(i), d);
+					printf("                   %s %s, (%s, (%s), %u) ", mn, x86_64_r64(mrs), x86_64_r64(b), x86_64_r64(i), d);
 				}
 			}
 			else {
@@ -1308,7 +1308,7 @@ uint8_t x86_64_dec_lea(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, i
 					printf("%02x %02x %02x %02x ", bin[*bn], bin[*bn + 1], bin[*bn + 2], bin[*bn + 3]);
 					uint32_t d = bin[*bn] + (bin[*bn + 1] << 8) + (bin[*bn + 2] << 16) + (bin[*bn + 3] << 24);
 					*bn += 4;
-					printf("             %s %s, (%s, %s, %u) ", mn, x86_64_r64(mrs), x86_64_r64(b), x86_64_r64(i), d);
+					printf("             %s %s, (%s, (%s), %u) ", mn, x86_64_r64(mrs), x86_64_r64(b), x86_64_r64(i), d);
 				}
 			}
 			else {
