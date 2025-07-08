@@ -1963,6 +1963,350 @@ uint8_t i386_dec_imm(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int
 	return 1;
 }
 
+uint8_t i386_dec_stck(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int8_t* mn, uint8_t lga, uint8_t lgo) {
+	if ((bin[*bn] & 248) == op) {
+		printf("%02x ", bin[*bn]);
+		uint8_t reg = (bin[*bn] & 7); 
+		*bn += 1;
+		
+		if (lgo) {
+			printf("                                 %sw %s ", mn, i386_r16(reg));
+		}
+		else {
+			printf("                                 %s %s ", mn, i386_r32(reg));
+		}
+		return 0;
+	}
+	return 1;
+}
+
+uint8_t i386_dec_op_imm(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int8_t* mn, uint8_t lga, uint8_t lgo) {
+	if (bin[*bn] == op) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		
+		if (lgo) {
+			printf("                  %02x %02x ", bin[*bn], bin[*bn + 1]);
+			uint16_t k = bin[*bn] + (bin[*bn + 1] << 8);
+			*bn += 2;
+			printf("         %sw %u ", mn, k);
+		}
+		else {
+			printf("                  %02x %02x %02x %02x ", bin[*bn], bin[*bn + 1], bin[*bn + 2], bin[*bn + 3]);
+			uint32_t k = bin[*bn] + (bin[*bn + 1] << 8) + (bin[*bn + 2] << 16) + (bin[*bn + 3] << 24);
+			*bn += 4;
+			printf("   %s %u ", mn, k);
+		}
+		return 0;
+	}
+	else if (bin[*bn] == op + 2) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		
+		printf("                  %02x ", bin[*bn]);
+		uint8_t k = bin[*bn];
+		*bn += 1;
+		if (lgo) {
+			printf("            %sw %u ", mn, k);
+		}
+		else {
+			printf("            %s %u ", mn, k);
+		}
+		return 0;
+	}
+	return 1;
+}
+
+uint8_t i386_dec_blnk(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0, uint8_t op1, int8_t* mn, uint8_t lga, uint8_t lgo) {
+	if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (0 | op1)) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		printf("%02x ", bin[*bn]);
+		uint8_t mrd = (bin[*bn] & 7);
+		
+		if (lga) {
+			if (mrd == 6) {
+				*bn += 1;
+				printf("   %02x %02x ", bin[*bn], bin[*bn + 1]);
+				uint16_t d = bin[*bn] + (bin[*bn + 1] << 8);
+				*bn += 2;
+				if (d) {
+					if (lgo) {
+						printf("                     %sw (bp, %u) ", mn, d);
+					}
+					else {
+						printf("                     %s (bp, %u) ", mn, d);
+					}
+				}
+				else {
+					if (lgo) {
+						printf("                     %sw (bp) ", mn);
+					}
+					else {
+						printf("                     %s (bp) ", mn);
+					}
+				}
+			}
+			else {
+				*bn += 1;
+				if (lgo) {
+					printf("                              %sw (%s) ", mn, i386_a16(mrd));
+				}
+				else {
+					printf("                              %s (%s) ", mn, i386_a16(mrd));
+				}
+			}
+		}
+		else {
+			if (mrd == 4) {
+				*bn += 1;
+				printf("%02x ", bin[*bn]);
+				uint8_t b = (bin[*bn] & 7);
+				uint8_t i = ((bin[*bn] >> 3) & 7);
+				uint8_t s = (bin[*bn] >> 6);
+				if (i == 4 && (b & 7) == 5) {
+					*bn += 1;
+					printf("%02x %02x %02x %02x ", bin[*bn], bin[*bn + 1], bin[*bn + 2], bin[*bn + 3]);
+					uint32_t d = bin[*bn] + (bin[*bn + 1] << 8) + (bin[*bn + 2] << 16) + (bin[*bn + 3] << 24);
+					*bn += 4;
+					if (d) {
+						if (lgo) {
+							printf("               %sw (ebp, %u) ", mn, d);
+						}
+						else {
+							printf("               %s (ebp, %u) ", mn, d);
+						}
+					}
+					else {
+						if (lgo) {
+							printf("               %sw (ebp) ", mn);
+						}
+						else {
+							printf("               %s (ebp) ", mn);
+						}
+					}
+				}
+				else if (i == 4) {
+					*bn += 1;
+					if (lgo) {
+						printf("                           %sw (%s) ", mn, i386_r32(b));
+					}
+					else {
+						printf("                           %s (%s) ", mn, i386_r32(b));
+					}
+				}
+				else if (s) {
+					*bn += 1;
+					if (lgo) {
+						printf("                           %sw (%s, (%s, %u)) ", mn, i386_r32(b), i386_r32(i), i386_s8(s));
+					}
+					else {
+						printf("                           %s (%s, (%s, %u)) ", mn, i386_r32(b), i386_r32(i), i386_s8(s));
+					}
+				}
+				else {
+					*bn += 1;
+					if (lgo) {
+						printf("                           %sw (%s, (%s)) ", mn, i386_r32(b), i386_r32(i));
+					}
+					else {
+						printf("                           %s (%s, (%s)) ", mn, i386_r32(b), i386_r32(i));
+					}
+				}
+			}
+			else {
+				*bn += 1;
+				if (lgo) {
+					printf("                              %sw (%s) ", mn, i386_r32(mrd));
+				}
+				else {
+					printf("                              %s (%s) ", mn, i386_r32(mrd));
+				}
+			}
+		}
+		return 0;
+	}
+	else if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (8 | op1)) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		printf("%02x ", bin[*bn]);
+		uint8_t mrd = (bin[*bn] & 7);
+		
+		if (lga) {
+			*bn += 1;
+			printf("   %02x ", bin[*bn]);
+			uint8_t d = bin[*bn];
+			*bn += 1;
+			if (lgo) {
+				printf("                        %sw (%s, %u) ", mn, i386_a16(mrd), d);
+			}
+			else {
+				printf("                        %s (%s, %u) ", mn, i386_a16(mrd), d);
+			}
+		}
+		else {
+			if ((mrd & 7) == 4) {
+				*bn += 1;
+				printf("%02x ", bin[*bn]);
+				uint8_t b = (bin[*bn] & 7);
+				uint8_t i = ((bin[*bn] >> 3) & 7);
+				uint8_t s = (bin[*bn] >> 6);
+				if (i == 4) {
+					*bn += 1;
+					printf("%02x ", bin[*bn]);
+					uint8_t d = bin[*bn];
+					*bn += 1;
+					if (lgo) {
+						printf("                        %sw (%s, %u) ", mn, i386_r32(b), d);
+					}
+					else {
+						printf("                        %s (%s, %u) ", mn, i386_r32(b), d);
+					}
+				}
+				else if (s) {
+					*bn += 1;
+					printf("%02x ", bin[*bn]);
+					uint8_t d = bin[*bn];
+					*bn += 1;
+					if (lgo) {
+						printf("                        %sw (%s, (%s, %u), %u) ", mn, i386_r32(b), i386_r32(i), i386_s8(s), d);
+					}
+					else {
+						printf("                        %s (%s, (%s, %u), %u) ", mn, i386_r32(b), i386_r32(i), i386_s8(s), d);
+					}
+				}
+				else {
+					*bn += 1;
+					printf("%02x ", bin[*bn]);
+					uint8_t d = bin[*bn];
+					*bn += 1;
+					if (lgo) {
+						printf("                        %sw (%s, (%s), %u) ", mn, i386_r32(b), i386_r32(i), d);
+					}
+					else {
+						printf("                        %s (%s, (%s), %u) ", mn, i386_r32(b), i386_r32(i), d);
+					}
+				}
+			}
+			else {
+				*bn += 1;
+				printf("   %02x ", bin[*bn]);
+				uint8_t d = bin[*bn];
+				*bn += 1;
+				if (lgo) {
+					printf("                        %sw (%s, %u) ", mn, i386_r32(mrd), d);
+				}
+				else {
+					printf("                        %s (%s, %u) ", mn, i386_r32(mrd), d);
+				}
+			}
+		}
+		return 0;
+	}
+	else if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (16 | op1)) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		printf("%02x ", bin[*bn]);
+		uint8_t mrd = (bin[*bn] & 7);
+		
+		if (lga) {
+			*bn += 1;
+			printf("   %02x %02x ", bin[*bn], bin[*bn + 1]);
+			uint16_t d = bin[*bn] + (bin[*bn + 1] << 8);
+			*bn += 2;
+			if (lgo) {
+				printf("                     %sw (%s, %u) ", mn, i386_a16(mrd), d);
+			}
+			else {
+				printf("                     %s (%s, %u) ", mn, i386_a16(mrd), d);
+			}
+		}
+		else {
+			if ((mrd & 7) == 4) {
+				*bn += 1;
+				printf("%02x ", bin[*bn]);
+				uint8_t b = (bin[*bn] & 7);
+				uint8_t i = ((bin[*bn] >> 3) & 7);
+				uint8_t s = (bin[*bn] >> 6);
+				if (i == 4) {
+					*bn += 1;
+					printf("%02x %02x %02x %02x ", bin[*bn], bin[*bn + 1], bin[*bn + 2], bin[*bn + 3]);
+					uint32_t d = bin[*bn] + (bin[*bn + 1] << 8) + (bin[*bn + 2] << 16) + (bin[*bn + 3] << 24);
+					*bn += 4;
+					if (lgo) {
+						printf("               %sw (%s, %u) ", mn, i386_r32(b), d);
+					}
+					else {
+						printf("               %s (%s, %u) ", mn, i386_r32(b), d);
+					}
+				}
+				else if (s) {
+					*bn += 1;
+					printf("%02x %02x %02x %02x ", bin[*bn], bin[*bn + 1], bin[*bn + 2], bin[*bn + 3]);
+					uint32_t d = bin[*bn] + (bin[*bn + 1] << 8) + (bin[*bn + 2] << 16) + (bin[*bn + 3] << 24);
+					*bn += 4;
+					if (lgo) {
+						printf("               %sw (%s, (%s, %u), %u) ", mn, i386_r32(b), i386_r32(i), i386_s8(s), d);
+					}
+					else {
+						printf("               %s (%s, (%s, %u), %u) ", mn, i386_r32(b), i386_r32(i), i386_s8(s), d);
+					}
+				}
+				else {
+					*bn += 1;
+					printf("%02x %02x %02x %02x ", bin[*bn], bin[*bn + 1], bin[*bn + 2], bin[*bn + 3]);
+					uint32_t d = bin[*bn] + (bin[*bn + 1] << 8) + (bin[*bn + 2] << 16) + (bin[*bn + 3] << 24);
+					*bn += 4;
+					if (lgo) {
+						printf("               %sw (%s, (%s), %u) ", mn, i386_r32(b), i386_r32(i), d);
+					}
+					else {
+						printf("               %s (%s, (%s), %u) ", mn, i386_r32(b), i386_r32(i), d);
+					}
+				}
+			}
+			else {
+				*bn += 1;
+				printf("   %02x %02x %02x %02x ", bin[*bn], bin[*bn + 1], bin[*bn + 2], bin[*bn + 3]);
+				uint32_t d = bin[*bn] + (bin[*bn + 1] << 8) + (bin[*bn + 2] << 16) + (bin[*bn + 3] << 24);
+				*bn += 4;
+				if (lgo) {
+					printf("               %sw (%s, %u) ", mn, i386_r32(mrd), d);
+				}
+				else {
+					printf("               %s (%s, %u) ", mn, i386_r32(mrd), d);
+				}
+			}
+		}
+		return 0;
+	}
+	return 1;
+}
+uint8_t i386_dec_jmp(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int8_t* mn, uint8_t lga, uint8_t lgo) {
+	if (bin[*bn] == op) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		
+		printf("                  %02x ", bin[*bn]);
+		uint8_t d = bin[*bn];
+		*bn += 1;
+		
+		printf("            %s %u ", mn, d);
+		return 0;
+	}
+	else if (bin[*bn] == 15 && bin[*bn + 1] == op + 16) {
+		printf("%02x %02x ", bin[*bn], bin[*bn + 1]);
+		*bn += 2;
+		
+		printf("               %02x %02x %02x %02x ", bin[*bn], bin[*bn + 1], bin[*bn + 2], bin[*bn + 3]);
+		uint32_t k = bin[*bn] + (bin[*bn + 1] << 8) + (bin[*bn + 2] << 16) + (bin[*bn + 3] << 24);
+		*bn += 4;
+		
+		printf("   %s %u ", mn, k);
+		return 0;
+	}
+	return 1;
+}
 
 void i386_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 	uint8_t lga = 0;
@@ -2035,6 +2379,69 @@ void i386_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 	}
 	if (eo) {
 		eo = i386_dec_imm(bin, bn, addr, 7, "cmp", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_stck(bin, bn, addr, 80, "push", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_stck(bin, bn, addr, 88, "pop", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_op_imm(bin, bn, addr, 104, "push", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_blnk(bin, bn, addr, 255, 6, "push", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_blnk(bin, bn, addr, 143, 0, "pop", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_jmp(bin, bn, addr, 112, "jo", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_jmp(bin, bn, addr, 113, "jno", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_jmp(bin, bn, addr, 114, "jc", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_jmp(bin, bn, addr, 115, "jnc", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_jmp(bin, bn, addr, 116, "je", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_jmp(bin, bn, addr, 117, "jne", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_jmp(bin, bn, addr, 118, "jna", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_jmp(bin, bn, addr, 119, "ja", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_jmp(bin, bn, addr, 120, "js", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_jmp(bin, bn, addr, 121, "jns", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_jmp(bin, bn, addr, 122, "jpe", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_jmp(bin, bn, addr, 123, "jpo", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_jmp(bin, bn, addr, 124, "jl", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_jmp(bin, bn, addr, 125, "jge", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_jmp(bin, bn, addr, 126, "jle", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_jmp(bin, bn, addr, 127, "jg", lga, lgo);
 	}
 	if (eo) {
 		printf("%02x ", bin[*bn]);

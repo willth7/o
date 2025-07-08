@@ -3743,18 +3743,18 @@ uint8_t x86_64_dec_blnk(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0,
 				*bn += 1;
 				if (lgo) {
 					if (lga) {
-						printf("               %sw (%s) ", mn, x86_64_r32(b));
+						printf("                           %sw (%s) ", mn, x86_64_r32(b));
 					}
 					else {
-						printf("               %sw (%s) ", mn, x86_64_r64(b));
+						printf("                           %sw (%s) ", mn, x86_64_r64(b));
 					}
 				}
 				else {
 					if (lga) {
-						printf("               %s (%s) ", mn, x86_64_r32(b));
+						printf("                           %s (%s) ", mn, x86_64_r32(b));
 					}
 					else {
-						printf("               %s (%s) ", mn, x86_64_r64(b));
+						printf("                           %s (%s) ", mn, x86_64_r64(b));
 					}
 				}
 			}
@@ -3762,18 +3762,18 @@ uint8_t x86_64_dec_blnk(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0,
 				*bn += 1;
 				if (lgo) {
 					if (lga) {
-						printf("               %sw (%s, (%s, %u)) ", mn, x86_64_r32(b), x86_64_r32(i), x86_64_s8(s));
+						printf("                           %sw (%s, (%s, %u)) ", mn, x86_64_r32(b), x86_64_r32(i), x86_64_s8(s));
 					}
 					else {
-						printf("               %sw (%s, (%s, %u)) ", mn, x86_64_r64(b), x86_64_r64(i), x86_64_s8(s));
+						printf("                           %sw (%s, (%s, %u)) ", mn, x86_64_r64(b), x86_64_r64(i), x86_64_s8(s));
 					}
 				}
 				else {
 					if (lga) {
-						printf("               %s (%s, (%s, %u)) ", mn, x86_64_r32(b), x86_64_r32(i), x86_64_s8(s));
+						printf("                           %s (%s, (%s, %u)) ", mn, x86_64_r32(b), x86_64_r32(i), x86_64_s8(s));
 					}
 					else {
-						printf("               %s (%s, (%s, %u)) ", mn, x86_64_r64(b), x86_64_r64(i), x86_64_s8(s));
+						printf("                           %s (%s, (%s, %u)) ", mn, x86_64_r64(b), x86_64_r64(i), x86_64_s8(s));
 					}
 				}
 			}
@@ -3781,60 +3781,18 @@ uint8_t x86_64_dec_blnk(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0,
 				*bn += 1;
 				if (lgo) {
 					if (lga) {
-						printf("               %sw (%s, (%s)) ", mn, x86_64_r32(b), x86_64_r32(i));
+						printf("                           %sw (%s, (%s)) ", mn, x86_64_r32(b), x86_64_r32(i));
 					}
 					else {
-						printf("               %sw (%s, (%s)) ", mn, x86_64_r64(b), x86_64_r64(i));
+						printf("                           %sw (%s, (%s)) ", mn, x86_64_r64(b), x86_64_r64(i));
 					}
 				}
 				else {
 					if (lga) {
-						printf("               %s (%s, (%s)) ", mn, x86_64_r32(b), x86_64_r32(i));
+						printf("                           %s (%s, (%s)) ", mn, x86_64_r32(b), x86_64_r32(i));
 					}
 					else {
-						printf("               %s (%s, (%s)) ", mn, x86_64_r64(b), x86_64_r64(i));
-					}
-				}
-			}
-		}
-		else if ((mrd & 7) == 5) {
-			*bn += 1;
-			printf("   %02x %02x %02x %02x ", bin[*bn], bin[*bn + 1], bin[*bn + 2], bin[*bn + 3]);
-			uint32_t d = bin[*bn] + (bin[*bn + 1] << 8) + (bin[*bn + 2] << 16) + (bin[*bn + 3] << 24);
-			*bn += 4;
-			if (d) {
-				if (lgo) {
-					if (lga) {
-						printf("               %sw (eip, %u) ", mn, d);
-					}
-					else {
-						printf("               %sw (rip, %u) ", mn, d);
-					}
-				}
-				else {
-					if (lga) {
-						printf("               %s (eip, %u) ", mn, d);
-					}
-					else {
-						printf("               %s (rip, %u) ", mn, d);
-					}
-				}
-			}
-			else {
-				if (lgo) {
-					if (lga) {
-						printf("               %sw (eip) ", mn);
-					}
-					else {
-						printf("               %sw (rip) ", mn);
-					}
-				}
-				else {
-					if (lga) {
-						printf("               %s (eip) ", mn);
-					}
-					else {
-						printf("               %s (rip) ", mn);
+						printf("                           %s (%s, (%s)) ", mn, x86_64_r64(b), x86_64_r64(i));
 					}
 				}
 			}
@@ -3843,18 +3801,18 @@ uint8_t x86_64_dec_blnk(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0,
 			*bn += 1;
 			if (lgo) {
 				if (lga) {
-					printf("               %sw (%s) ", mn, x86_64_r32(mrd));
+					printf("                              %sw (%s) ", mn, x86_64_r32(mrd));
 				}
 				else {
-					printf("               %sw (%s) ", mn, x86_64_r64(mrd));
+					printf("                              %sw (%s) ", mn, x86_64_r64(mrd));
 				}
 			}
 			else {
 				if (lga) {
-					printf("               %s (%s) ", mn, x86_64_r32(mrd));
+					printf("                              %s (%s) ", mn, x86_64_r32(mrd));
 				}
 				else {
-					printf("               %s (%s) ", mn, x86_64_r64(mrd));
+					printf("                              %s (%s) ", mn, x86_64_r64(mrd));
 				}
 			}
 		}
@@ -3880,18 +3838,18 @@ uint8_t x86_64_dec_blnk(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0,
 				*bn += 1;
 				if (lgo) {
 					if (lga) {
-						printf("               %sw (%s, %u) ", mn, x86_64_r32(b), d);
+						printf("                        %sw (%s, %u) ", mn, x86_64_r32(b), d);
 					}
 					else {
-						printf("               %sw (%s, %u) ", mn, x86_64_r64(b), d);
+						printf("                        %sw (%s, %u) ", mn, x86_64_r64(b), d);
 					}
 				}
 				else {
 					if (lga) {
-						printf("               %s (%s, %u) ", mn, x86_64_r32(b), d);
+						printf("                        %s (%s, %u) ", mn, x86_64_r32(b), d);
 					}
 					else {
-						printf("               %s (%s, %u) ", mn, x86_64_r64(b), d);
+						printf("                        %s (%s, %u) ", mn, x86_64_r64(b), d);
 					}
 				}
 			}
@@ -3902,18 +3860,18 @@ uint8_t x86_64_dec_blnk(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0,
 				*bn += 1;
 				if (lgo) {
 					if (lga) {
-						printf("               %sw (%s, (%s, %u), %u) ", mn, x86_64_r32(b), x86_64_r32(i), x86_64_s8(s), d);
+						printf("                        %sw (%s, (%s, %u), %u) ", mn, x86_64_r32(b), x86_64_r32(i), x86_64_s8(s), d);
 					}
 					else {
-						printf("               %sw (%s, (%s, %u), %u) ", mn, x86_64_r64(b), x86_64_r64(i), x86_64_s8(s), d);
+						printf("                        %sw (%s, (%s, %u), %u) ", mn, x86_64_r64(b), x86_64_r64(i), x86_64_s8(s), d);
 					}
 				}
 				else {
 					if (lga) {
-						printf("               %s (%s, (%s, %u), %u) ", mn, x86_64_r32(b), x86_64_r32(i), x86_64_s8(s), d);
+						printf("                        %s (%s, (%s, %u), %u) ", mn, x86_64_r32(b), x86_64_r32(i), x86_64_s8(s), d);
 					}
 					else {
-						printf("               %s (%s, (%s, %u), %u) ", mn, x86_64_r64(b), x86_64_r64(i), x86_64_s8(s), d);
+						printf("                        %s (%s, (%s, %u), %u) ", mn, x86_64_r64(b), x86_64_r64(i), x86_64_s8(s), d);
 					}
 				}
 			}
@@ -3924,18 +3882,18 @@ uint8_t x86_64_dec_blnk(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0,
 				*bn += 1;
 				if (lgo) {
 					if (lga) {
-						printf("               %sw (%s, (%s), %u) ", mn, x86_64_r32(b), x86_64_r32(i), d);
+						printf("                        %sw (%s, (%s), %u) ", mn, x86_64_r32(b), x86_64_r32(i), d);
 					}
 					else {
-						printf("               %sw (%s, (%s), %u) ", mn, x86_64_r64(b), x86_64_r64(i), d);
+						printf("                        %sw (%s, (%s), %u) ", mn, x86_64_r64(b), x86_64_r64(i), d);
 					}
 				}
 				else {
 					if (lga) {
-						printf("               %s (%s, (%s), %u) ", mn, x86_64_r32(b), x86_64_r32(i), d);
+						printf("                        %s (%s, (%s), %u) ", mn, x86_64_r32(b), x86_64_r32(i), d);
 					}
 					else {
-						printf("               %s (%s, (%s), %u) ", mn, x86_64_r64(b), x86_64_r64(i), d);
+						printf("                        %s (%s, (%s), %u) ", mn, x86_64_r64(b), x86_64_r64(i), d);
 					}
 				}
 			}
@@ -3947,18 +3905,18 @@ uint8_t x86_64_dec_blnk(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0,
 			*bn += 1;
 			if (lgo) {
 				if (lga) {
-					printf("               %sw (%s, %u) ", mn, x86_64_r32(mrd), d);
+					printf("                        %sw (%s, %u) ", mn, x86_64_r32(mrd), d);
 				}
 				else {
-					printf("               %sw (%s, %u) ", mn, x86_64_r64(mrd), d);
+					printf("                        %sw (%s, %u) ", mn, x86_64_r64(mrd), d);
 				}
 			}
 			else {
 				if (lga) {
-					printf("               %s (%s, %u) ", mn, x86_64_r32(mrd), d);
+					printf("                        %s (%s, %u) ", mn, x86_64_r32(mrd), d);
 				}
 				else {
-					printf("               %s (%s, %u) ", mn, x86_64_r64(mrd), d);
+					printf("                        %s (%s, %u) ", mn, x86_64_r64(mrd), d);
 				}
 			}
 		}
