@@ -2280,8 +2280,24 @@ uint8_t i386_dec_blnk(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0, u
 		}
 		return 0;
 	}
+	else if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (24 | op1)) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		printf("%02x ", bin[*bn]);
+		uint8_t mrd = (bin[*bn] & 7);
+		
+		*bn += 1;
+		if (lgo) {
+			printf("                           %sw %s ", mn, i386_r16(mrd));
+		}
+		else {
+			printf("                           %s %s ", mn, i386_r32(mrd));
+		}
+		return 0;
+	}
 	return 1;
 }
+
 uint8_t i386_dec_jmp(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int8_t* mn, uint8_t lga, uint8_t lgo) {
 	if (bin[*bn] == op) {
 		printf("%02x ", bin[*bn]);
@@ -2303,6 +2319,17 @@ uint8_t i386_dec_jmp(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int
 		*bn += 4;
 		
 		printf("   %s %u ", mn, k);
+		return 0;
+	}
+	return 1;
+}
+
+uint8_t i386_dec_byt(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int8_t* mn, uint8_t lga, uint8_t lgo) {
+	if (bin[*bn] == op) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		
+		printf("                                 %s", mn);
 		return 0;
 	}
 	return 1;
@@ -2442,6 +2469,12 @@ void i386_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 	}
 	if (eo) {
 		eo = i386_dec_jmp(bin, bn, addr, 127, "jg", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_byt(bin, bn, addr, 156, "pushf", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_byt(bin, bn, addr, 157, "popf", lga, lgo);
 	}
 	if (eo) {
 		printf("%02x ", bin[*bn]);
