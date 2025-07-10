@@ -2477,6 +2477,12 @@ void i386_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		eo = i386_dec_byt(bin, bn, addr, 157, "popf", lga, lgo);
 	}
 	if (eo) {
+		eo = i386_dec_byt(bin, bn, addr, 158, "sahf ah", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_byt(bin, bn, addr, 159, "lahf ah", lga, lgo);
+	}
+	if (eo) {
 		printf("%02x ", bin[*bn]);
 		*bn += 1;
 	}

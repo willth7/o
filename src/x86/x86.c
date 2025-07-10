@@ -791,6 +791,12 @@ void x86_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		eo = x86_dec_byt(bin, bn, addr, 157, "popf");
 	}
 	if (eo) {
+		eo = x86_dec_byt(bin, bn, addr, 158, "sahf ah");
+	}
+	if (eo) {
+		eo = x86_dec_byt(bin, bn, addr, 159, "lahf ah");
+	}
+	if (eo) {
 		printf("%02x ", bin[*bn]);
 		*bn += 1;
 	}	
