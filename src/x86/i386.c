@@ -142,7 +142,7 @@ uint8_t i386_s8(uint8_t k) {
 	}
 }
 
-uint8_t i386_dec_reg(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int8_t* mn, uint8_t lga, uint8_t lgo) {
+uint8_t i386_dec_r80(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int8_t* mn, uint8_t lga, uint8_t lgo) {
 	if (bin[*bn] == op) {
 		printf("%02x ", bin[*bn]);
 		*bn += 1;
@@ -300,7 +300,11 @@ uint8_t i386_dec_reg(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int
 		}
 		return 0;
 	}
-	else if (bin[*bn] == op + 1) {
+	return 1;
+}
+
+uint8_t i386_dec_rg0(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int8_t* mn, uint8_t lga, uint8_t lgo) {
+	if (bin[*bn] == op) {
 		printf("%02x ", bin[*bn]);
 		*bn += 1;
 		printf("%02x ", bin[*bn]);
@@ -557,7 +561,11 @@ uint8_t i386_dec_reg(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int
 		}
 		return 0;
 	}
-	else if (bin[*bn] == op + 2) {
+	return 1;
+}
+
+uint8_t i386_dec_r81(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int8_t* mn, uint8_t lga, uint8_t lgo) {
+	if (bin[*bn] == op) {
 		printf("%02x ", bin[*bn]);
 		*bn += 1;
 		printf("%02x ", bin[*bn]);
@@ -714,7 +722,11 @@ uint8_t i386_dec_reg(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int
 		}
 		return 0;
 	}
-	else if (bin[*bn] == op + 3) {
+	return 1;
+}
+
+uint8_t i386_dec_rg1(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int8_t* mn, uint8_t lga, uint8_t lgo) {
+	if (bin[*bn] == op) {
 		printf("%02x ", bin[*bn]);
 		*bn += 1;
 		printf("%02x ", bin[*bn]);
@@ -971,7 +983,11 @@ uint8_t i386_dec_reg(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int
 		}
 		return 0;
 	}
-	else if (bin[*bn] == op + 4) {
+	return 1;
+}
+
+uint8_t i386_dec_ral(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int8_t* mn, uint8_t lga, uint8_t lgo) {
+	if (bin[*bn] == op) {
 		printf("%02x ", bin[*bn]);
 		*bn += 1;
 		printf("                  %02x ", bin[*bn]);
@@ -980,7 +996,11 @@ uint8_t i386_dec_reg(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int
 		printf("            %s al, %u ", mn, k);
 		return 0;
 	}
-	else if (bin[*bn] == op + 5) {
+	return 1;
+}
+
+uint8_t i386_dec_rax(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int8_t* mn, uint8_t lga, uint8_t lgo) {
+	if (bin[*bn] == op) {
 		printf("%02x ", bin[*bn]);
 		*bn += 1;
 		if (lgo) {
@@ -1000,8 +1020,8 @@ uint8_t i386_dec_reg(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int
 	return 1;
 }
 
-uint8_t i386_dec_imm(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int8_t* mn, uint8_t lga, uint8_t lgo) {
-	if (bin[*bn] == 128 && (bin[*bn + 1] >> 3) == (0 | op)) {
+uint8_t i386_dec_k80(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0, uint8_t op1, int8_t* mn, uint8_t lga, uint8_t lgo) {
+	if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (0 | op1)) {
 		printf("%02x ", bin[*bn]);
 		*bn += 1;
 		printf("%02x ", bin[*bn]);
@@ -1085,7 +1105,7 @@ uint8_t i386_dec_imm(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int
 		}
 		return 0;
 	}
-	else if (bin[*bn] == 128 && (bin[*bn + 1] >> 3) == (8 | op)) {
+	else if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (8 | op1)) {
 		printf("%02x ", bin[*bn]);
 		*bn += 1;
 		printf("%02x ", bin[*bn]);
@@ -1152,7 +1172,7 @@ uint8_t i386_dec_imm(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int
 		}
 		return 0;
 	}
-	else if (bin[*bn] == 128 && (bin[*bn + 1] >> 3) == (16 | op)) {
+	else if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (16 | op1)) {
 		printf("%02x ", bin[*bn]);
 		*bn += 1;
 		printf("%02x ", bin[*bn]);
@@ -1219,7 +1239,7 @@ uint8_t i386_dec_imm(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int
 		}
 		return 0;
 	}
-	else if (bin[*bn] == 128 && (bin[*bn + 1] >> 3) == (24 | op)) {
+	else if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (24 | op1)) {
 		printf("%02x ", bin[*bn]);
 		*bn += 1;
 		printf("%02x ", bin[*bn]);
@@ -1232,7 +1252,11 @@ uint8_t i386_dec_imm(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int
 		printf("            %sb %s, %u ", mn, i386_r8(mrd), k);
 		return 0;
 	}
-	else if (bin[*bn] == 129 && (bin[*bn + 1] >> 3) == (0 | op)) {
+	return 1;
+}
+
+uint8_t i386_dec_imm(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0, uint8_t op1, int8_t* mn, uint8_t lga, uint8_t lgo) {
+	if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (0 | op1)) {
 		printf("%02x ", bin[*bn]);
 		*bn += 1;
 		printf("%02x ", bin[*bn]);
@@ -1394,7 +1418,7 @@ uint8_t i386_dec_imm(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int
 		}
 		return 0;
 	}
-	else if (bin[*bn] == 129 && (bin[*bn + 1] >> 3) == (8 | op)) {
+	else if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (8 | op1)) {
 		printf("%02x ", bin[*bn]);
 		*bn += 1;
 		printf("%02x ", bin[*bn]);
@@ -1501,7 +1525,7 @@ uint8_t i386_dec_imm(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int
 		}
 		return 0;
 	}
-	else if (bin[*bn] == 129 && (bin[*bn + 1] >> 3) == (16 | op)) {
+	else if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (16 | op1)) {
 		printf("%02x ", bin[*bn]);
 		*bn += 1;
 		printf("%02x ", bin[*bn]);
@@ -1608,7 +1632,7 @@ uint8_t i386_dec_imm(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int
 		}
 		return 0;
 	}
-	else if (bin[*bn] == 129 && (bin[*bn + 1] >> 3) == (24 | op)) {
+	else if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (24 | op1)) {
 		printf("%02x ", bin[*bn]);
 		*bn += 1;
 		printf("%02x ", bin[*bn]);
@@ -1629,7 +1653,11 @@ uint8_t i386_dec_imm(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int
 		}
 		return 0;
 	}
-	else if (bin[*bn] == 131 && (bin[*bn + 1] >> 3) == (0 | op)) {
+	return 1;
+}
+
+uint8_t i386_dec_k81(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0, uint8_t op1, int8_t* mn, uint8_t lga, uint8_t lgo) {
+	if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (0 | op1)) {
 		printf("%02x ", bin[*bn]);
 		*bn += 1;
 		printf("%02x ", bin[*bn]);
@@ -1758,7 +1786,7 @@ uint8_t i386_dec_imm(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int
 		}
 		return 0;
 	}
-	else if (bin[*bn] == 131 && (bin[*bn + 1] >> 3) == (8 | op)) {
+	else if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (8 | op1)) {
 		printf("%02x ", bin[*bn]);
 		*bn += 1;
 		printf("%02x ", bin[*bn]);
@@ -1850,7 +1878,7 @@ uint8_t i386_dec_imm(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int
 		}
 		return 0;
 	}
-	else if (bin[*bn] == 131 && (bin[*bn + 1] >> 3) == (16 | op)) {
+	else if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (16 | op1)) {
 		printf("%02x ", bin[*bn]);
 		*bn += 1;
 		printf("%02x ", bin[*bn]);
@@ -1942,7 +1970,7 @@ uint8_t i386_dec_imm(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int
 		}
 		return 0;
 	}
-	else if (bin[*bn] == 131 && (bin[*bn + 1] >> 3) == (24 | op)) {
+	else if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (24 | op1)) {
 		printf("%02x ", bin[*bn]);
 		*bn += 1;
 		printf("%02x ", bin[*bn]);
@@ -2360,52 +2388,148 @@ void i386_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 	uint8_t eo = 1;
 	
 	if (eo) {
-		eo = i386_dec_reg(bin, bn, addr, 0, "add", lga, lgo);
+		eo = i386_dec_r80(bin, bn, addr, 0, "add", lga, lgo);
 	}
 	if (eo) {
-		eo = i386_dec_reg(bin, bn, addr, 8, "or", lga, lgo);
+		eo = i386_dec_rg0(bin, bn, addr, 1, "add", lga, lgo);
 	}
 	if (eo) {
-		eo = i386_dec_reg(bin, bn, addr, 16, "adc", lga, lgo);
+		eo = i386_dec_r81(bin, bn, addr, 2, "add", lga, lgo);
 	}
 	if (eo) {
-		eo = i386_dec_reg(bin, bn, addr, 24, "sbb", lga, lgo);
+		eo = i386_dec_rg1(bin, bn, addr, 3, "add", lga, lgo);
 	}
 	if (eo) {
-		eo = i386_dec_reg(bin, bn, addr, 32, "and", lga, lgo);
+		eo = i386_dec_ral(bin, bn, addr, 4, "add", lga, lgo);
 	}
 	if (eo) {
-		eo = i386_dec_reg(bin, bn, addr, 40, "sub", lga, lgo);
+		eo = i386_dec_rax(bin, bn, addr, 5, "add", lga, lgo);
 	}
 	if (eo) {
-		eo = i386_dec_reg(bin, bn, addr, 48, "xor", lga, lgo);
+		eo = i386_dec_r80(bin, bn, addr, 8, "or", lga, lgo);
 	}
 	if (eo) {
-		eo = i386_dec_reg(bin, bn, addr, 56, "cmp", lga, lgo);
+		eo = i386_dec_rg0(bin, bn, addr, 9, "or", lga, lgo);
 	}
 	if (eo) {
-		eo = i386_dec_imm(bin, bn, addr, 0, "add", lga, lgo);
+		eo = i386_dec_r81(bin, bn, addr, 10, "or", lga, lgo);
 	}
 	if (eo) {
-		eo = i386_dec_imm(bin, bn, addr, 1, "or", lga, lgo);
+		eo = i386_dec_rg1(bin, bn, addr, 11, "or", lga, lgo);
 	}
 	if (eo) {
-		eo = i386_dec_imm(bin, bn, addr, 2, "adc", lga, lgo);
+		eo = i386_dec_ral(bin, bn, addr, 12, "or", lga, lgo);
 	}
 	if (eo) {
-		eo = i386_dec_imm(bin, bn, addr, 3, "sbb", lga, lgo);
+		eo = i386_dec_rax(bin, bn, addr, 13, "or", lga, lgo);
 	}
 	if (eo) {
-		eo = i386_dec_imm(bin, bn, addr, 4, "and", lga, lgo);
+		eo = i386_dec_r80(bin, bn, addr, 16, "adc", lga, lgo);
 	}
 	if (eo) {
-		eo = i386_dec_imm(bin, bn, addr, 5, "sub", lga, lgo);
+		eo = i386_dec_rg0(bin, bn, addr, 17, "adc", lga, lgo);
 	}
 	if (eo) {
-		eo = i386_dec_imm(bin, bn, addr, 6, "xor", lga, lgo);
+		eo = i386_dec_r81(bin, bn, addr, 18, "adc", lga, lgo);
 	}
 	if (eo) {
-		eo = i386_dec_imm(bin, bn, addr, 7, "cmp", lga, lgo);
+		eo = i386_dec_rg1(bin, bn, addr, 19, "adc", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_ral(bin, bn, addr, 20, "adc", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_rax(bin, bn, addr, 21, "adc", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_r80(bin, bn, addr, 24, "sbb", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_rg0(bin, bn, addr, 25, "sbb", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_r81(bin, bn, addr, 26, "sbb", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_rg1(bin, bn, addr, 27, "sbb", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_ral(bin, bn, addr, 28, "sbb", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_rax(bin, bn, addr, 29, "sbb", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_r80(bin, bn, addr, 32, "and", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_rg0(bin, bn, addr, 33, "and", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_r81(bin, bn, addr, 34, "and", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_rg1(bin, bn, addr, 35, "and", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_ral(bin, bn, addr, 36, "and", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_rax(bin, bn, addr, 37, "and", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_r80(bin, bn, addr, 40, "sub", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_rg0(bin, bn, addr, 41, "sub", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_r81(bin, bn, addr, 42, "sub", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_rg1(bin, bn, addr, 43, "sub", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_ral(bin, bn, addr, 44, "sub", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_rax(bin, bn, addr, 45, "sub", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_r80(bin, bn, addr, 48, "xor", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_rg0(bin, bn, addr, 49, "xor", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_r81(bin, bn, addr, 50, "xor", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_rg1(bin, bn, addr, 51, "xor", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_ral(bin, bn, addr, 52, "xor", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_rax(bin, bn, addr, 53, "xor", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_r80(bin, bn, addr, 56, "cmp", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_rg0(bin, bn, addr, 57, "cmp", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_r81(bin, bn, addr, 58, "cmp", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_rg1(bin, bn, addr, 59, "cmp", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_ral(bin, bn, addr, 60, "cmp", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_rax(bin, bn, addr, 61, "cmp", lga, lgo);
 	}
 	if (eo) {
 		eo = i386_dec_stck(bin, bn, addr, 80, "push", lga, lgo);
@@ -2415,12 +2539,6 @@ void i386_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 	}
 	if (eo) {
 		eo = i386_dec_op_imm(bin, bn, addr, 104, "push", lga, lgo);
-	}
-	if (eo) {
-		eo = i386_dec_blnk(bin, bn, addr, 255, 6, "push", lga, lgo);
-	}
-	if (eo) {
-		eo = i386_dec_blnk(bin, bn, addr, 143, 0, "pop", lga, lgo);
 	}
 	if (eo) {
 		eo = i386_dec_jmp(bin, bn, addr, 112, "jo", lga, lgo);
@@ -2471,6 +2589,105 @@ void i386_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		eo = i386_dec_jmp(bin, bn, addr, 127, "jg", lga, lgo);
 	}
 	if (eo) {
+		eo = i386_dec_k80(bin, bn, addr, 128, 0, "add", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_k80(bin, bn, addr, 128, 1, "or", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_k80(bin, bn, addr, 128, 2, "adc", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_k80(bin, bn, addr, 128, 3, "sbb", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_k80(bin, bn, addr, 128, 4, "and", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_k80(bin, bn, addr, 128, 5, "sub", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_k80(bin, bn, addr, 128, 6, "xor", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_k80(bin, bn, addr, 128, 7, "cmp", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_imm(bin, bn, addr, 129, 0, "add", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_imm(bin, bn, addr, 129, 1, "or", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_imm(bin, bn, addr, 129, 2, "adc", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_imm(bin, bn, addr, 129, 3, "sbb", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_imm(bin, bn, addr, 129, 4, "and", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_imm(bin, bn, addr, 129, 5, "sub", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_imm(bin, bn, addr, 129, 6, "xor", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_imm(bin, bn, addr, 129, 7, "cmp", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_k81(bin, bn, addr, 131, 0, "add", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_k81(bin, bn, addr, 131, 1, "or", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_k81(bin, bn, addr, 131, 2, "adc", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_k81(bin, bn, addr, 131, 3, "sbb", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_k81(bin, bn, addr, 131, 4, "and", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_k81(bin, bn, addr, 131, 5, "sub", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_k81(bin, bn, addr, 131, 6, "xor", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_k81(bin, bn, addr, 131, 7, "cmp", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_r81(bin, bn, addr, 134, "xchg", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_rg1(bin, bn, addr, 135, "xchg", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_r80(bin, bn, addr, 136, "mov", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_rg0(bin, bn, addr, 137, "mov", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_r81(bin, bn, addr, 138, "mov", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_rg1(bin, bn, addr, 139, "mov", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_rg1(bin, bn, addr, 141, "lea", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_blnk(bin, bn, addr, 143, 0, "pop", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_stck(bin, bn, addr, 144, "xchg", lga, lgo);
+	}
+	if (eo) {
 		eo = i386_dec_byt(bin, bn, addr, 156, "pushf", lga, lgo);
 	}
 	if (eo) {
@@ -2481,6 +2698,9 @@ void i386_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 	}
 	if (eo) {
 		eo = i386_dec_byt(bin, bn, addr, 159, "lahf ah", lga, lgo);
+	}
+	if (eo) {
+		eo = i386_dec_blnk(bin, bn, addr, 255, 6, "push", lga, lgo);
 	}
 	if (eo) {
 		printf("%02x ", bin[*bn]);
