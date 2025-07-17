@@ -530,7 +530,7 @@ uint8_t x86_dec_k81(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0, uin
 		printf("      %02x ", bin[*bn]);
 		uint8_t k = bin[*bn];
 		*bn += 1;
-		printf("      %sw %s, %u ", mn, x86_r8(mrd), k);
+		printf("      %sw %s, %u ", mn, x86_r16(mrd), k);
 		
 		return 0;
 	}
@@ -643,6 +643,218 @@ uint8_t x86_dec_jmp(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int8
 		*bn += 1;
 		
 		printf("      %s %u ", mn, k);
+		return 0;
+	}
+	return 1;
+}
+
+uint8_t x86_dec_shft_k80(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0, uint8_t op1, int8_t* mn) {
+	if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (0 | op1)) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		printf("%02x ", bin[*bn]);
+		uint8_t mrd = (bin[*bn] & 7);
+		
+		if (mrd == 6) {
+			*bn += 1;
+			printf("%02x %02x ", bin[*bn], bin[*bn + 1]);
+			uint16_t d = bin[*bn] + (bin[*bn + 1] << 8);
+			*bn += 2;
+			printf("         %sb (%u), 1 ", mn, d);
+		}
+		else {
+			*bn += 1;
+			printf("               %sb (%s), 1 ", mn, x86_a16(mrd));
+		}
+		return 0;
+	}
+	else if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (8 | op1)) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		printf("%02x ", bin[*bn]);
+		uint8_t mrd = (bin[*bn] & 7);
+		
+		*bn += 1;
+		printf("%02x ", bin[*bn]);
+		uint8_t d = bin[*bn];
+		*bn += 1;
+		printf("            %sb (%s, %u), 1 ", mn, x86_a16(mrd), d);
+		
+		return 0;
+	}
+	else if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (16 | op1)) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		printf("%02x ", bin[*bn]);
+		uint8_t mrd = (bin[*bn] & 7);
+		
+		*bn += 1;
+		printf("%02x %02x ", bin[*bn], bin[*bn + 1]);
+		uint16_t d = bin[*bn] + (bin[*bn + 1] << 8);
+		*bn += 2;
+		printf("         %sb (%s, %u), 1 ", mn, x86_a16(mrd), d);
+		
+		return 0;
+	}
+	else if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (24 | op1)) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		printf("%02x ", bin[*bn]);
+		uint8_t mrd = (bin[*bn] & 7);
+		
+		*bn += 1;
+		printf("               %sb %s, 1 ", mn, x86_r8(mrd));
+		
+		return 0;
+	}
+	return 1;
+}
+
+uint8_t x86_dec_shft_k81(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0, uint8_t op1, int8_t* mn) {
+	if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (0 | op1)) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		printf("%02x ", bin[*bn]);
+		uint8_t mrd = (bin[*bn] & 7);
+		
+		if (mrd == 6) {
+			*bn += 1;
+			printf("%02x %02x ", bin[*bn], bin[*bn + 1]);
+			uint16_t d = bin[*bn] + (bin[*bn + 1] << 8);
+			*bn += 2;
+			printf("         %sw (%u), 1 ", mn, d);
+		}
+		else {
+			*bn += 1;
+			printf("               %sw (%s), 1 ", mn, x86_a16(mrd));
+		}
+		return 0;
+	}
+	else if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (8 | op1)) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		printf("%02x ", bin[*bn]);
+		uint8_t mrd = (bin[*bn] & 7);
+		
+		*bn += 1;
+		printf("%02x ", bin[*bn]);
+		uint8_t d = bin[*bn];
+		*bn += 1;
+		printf("            %sw (%s, %u), 1 ", mn, x86_a16(mrd), d);
+		
+		return 0;
+	}
+	else if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (16 | op1)) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		printf("%02x ", bin[*bn]);
+		uint8_t mrd = (bin[*bn] & 7);
+		
+		*bn += 1;
+		printf("%02x %02x ", bin[*bn], bin[*bn + 1]);
+		uint16_t d = bin[*bn] + (bin[*bn + 1] << 8);
+		*bn += 2;
+		printf("         %sw (%s, %u), 1 ", mn, x86_a16(mrd), d);
+		
+		return 0;
+	}
+	else if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (24 | op1)) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		printf("%02x ", bin[*bn]);
+		uint8_t mrd = (bin[*bn] & 7);
+		
+		*bn += 1;
+		printf("               %sw %s, 1 ", mn, x86_r16(mrd));
+		
+		return 0;
+	}
+	return 1;
+}
+
+uint8_t x86_dec_shft_r8(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0, uint8_t op1, int8_t* mn) {
+	if (bin[*bn] == op0 && ((bin[*bn + 1] >> 3) & 7) == op1) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		printf("%02x ", bin[*bn]);
+		uint8_t mod = bin[*bn] >> 6;
+		uint8_t mrd = (bin[*bn] & 7);
+		
+		if (mod == 0) {
+			if (mrd == 6) {
+				*bn += 1;
+				printf("%02x %02x ", bin[*bn], bin[*bn + 1]);
+				uint16_t d = bin[*bn] + (bin[*bn + 1] << 8);
+				*bn += 2;
+				printf("         %sb (%u), cl ", mn, d);
+			}
+			else {
+				*bn += 1;
+				printf("               %sb (%s), cl ", mn, x86_a16(mrd));
+			}
+		}
+		else if (mod == 1) {
+			*bn += 1;
+			printf("%02x ", bin[*bn]);
+			uint8_t d = bin[*bn];
+			*bn += 1;
+			printf("            %sb (%s, %u), cl ", mn, x86_a16(mrd), d);
+		}
+		else if (mod == 2) {
+			*bn += 1;
+			printf("%02x %02x ", bin[*bn], bin[*bn + 1]);
+			uint16_t d = bin[*bn] + (bin[*bn + 1] << 8);
+			*bn += 2;
+			printf("         %sb (%s, %u), cl ", mn, x86_a16(mrd), d);
+		}
+		else if (mod == 3) {
+			*bn += 1;
+			printf("               %sb %s, cl ", mn, x86_r8(mrd));
+		}
+		return 0;
+	}
+	return 1;
+}
+
+uint8_t x86_dec_shft_reg(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0, uint8_t op1, int8_t* mn) {
+	if (bin[*bn] == op0 && ((bin[*bn + 1] >> 3) & 7) == op1) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		printf("%02x ", bin[*bn]);
+		uint8_t mod = bin[*bn] >> 6;
+		uint8_t mrd = (bin[*bn] & 7);
+		
+		if (mod == 0) {
+			if (mrd == 6) {
+				*bn += 1;
+				printf("%02x %02x ", bin[*bn], bin[*bn + 1]);
+				uint16_t d = bin[*bn] + (bin[*bn + 1] << 8);
+				*bn += 2;
+				printf("         %sw (%u), cl ", mn, d);
+			}
+			else {
+				*bn += 1;
+				printf("               %sw (%s), cl ", mn, x86_a16(mrd));
+			}
+		}
+		else if (mod == 1) {
+			*bn += 1;
+			printf("%02x ", bin[*bn]);
+			uint8_t d = bin[*bn];
+			*bn += 1;
+			printf("            %sw (%s, %u), cl ", mn, x86_a16(mrd), d);
+		}
+		else if (mod == 2) {
+			*bn += 1;
+			printf("%02x %02x ", bin[*bn], bin[*bn + 1]);
+			uint16_t d = bin[*bn] + (bin[*bn + 1] << 8);
+			*bn += 2;
+			printf("         %sw (%s, %u), cl ", mn, x86_a16(mrd), d);
+		}
+		else if (mod == 3) {
+			*bn += 1;
+			printf("               %sw %s, cl ", mn, x86_r16(mrd));
+		}
 		return 0;
 	}
 	return 1;
@@ -972,6 +1184,150 @@ void x86_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 	}
 	if (eo) {
 		eo = x86_dec_byt(bin, bn, addr, 159, "lahf ah");
+	}
+	if (eo) {
+		eo = x86_dec_k80(bin, bn, addr, 192, 0, "rol");
+	}
+	if (eo) {
+		eo = x86_dec_k80(bin, bn, addr, 192, 1, "ror");
+	}
+	if (eo) {
+		eo = x86_dec_k80(bin, bn, addr, 192, 2, "rcl");
+	}
+	if (eo) {
+		eo = x86_dec_k80(bin, bn, addr, 192, 3, "rcr");
+	}
+	if (eo) {
+		eo = x86_dec_k80(bin, bn, addr, 192, 4, "shl");
+	}
+	if (eo) {
+		eo = x86_dec_k80(bin, bn, addr, 192, 5, "shr");
+	}
+	if (eo) {
+		eo = x86_dec_k80(bin, bn, addr, 192, 6, "sal");
+	}
+	if (eo) {
+		eo = x86_dec_k80(bin, bn, addr, 192, 7, "sar");
+	}
+	if (eo) {
+		eo = x86_dec_k81(bin, bn, addr, 193, 0, "rol");
+	}
+	if (eo) {
+		eo = x86_dec_k81(bin, bn, addr, 193, 1, "ror");
+	}
+	if (eo) {
+		eo = x86_dec_k81(bin, bn, addr, 193, 2, "rcl");
+	}
+	if (eo) {
+		eo = x86_dec_k81(bin, bn, addr, 193, 3, "rcr");
+	}
+	if (eo) {
+		eo = x86_dec_k81(bin, bn, addr, 193, 4, "shl");
+	}
+	if (eo) {
+		eo = x86_dec_k81(bin, bn, addr, 193, 5, "shr");
+	}
+	if (eo) {
+		eo = x86_dec_k81(bin, bn, addr, 193, 6, "sal");
+	}
+	if (eo) {
+		eo = x86_dec_k81(bin, bn, addr, 193, 7, "sar");
+	}
+	if (eo) {
+		eo = x86_dec_shft_k80(bin, bn, addr, 208, 0, "rol");
+	}
+	if (eo) {
+		eo = x86_dec_shft_k80(bin, bn, addr, 208, 1, "ror");
+	}
+	if (eo) {
+		eo = x86_dec_shft_k80(bin, bn, addr, 208, 2, "rcl");
+	}
+	if (eo) {
+		eo = x86_dec_shft_k80(bin, bn, addr, 208, 3, "rcr");
+	}
+	if (eo) {
+		eo = x86_dec_shft_k80(bin, bn, addr, 208, 4, "shl");
+	}
+	if (eo) {
+		eo = x86_dec_shft_k80(bin, bn, addr, 208, 5, "shr");
+	}
+	if (eo) {
+		eo = x86_dec_shft_k80(bin, bn, addr, 208, 6, "sal");
+	}
+	if (eo) {
+		eo = x86_dec_shft_k80(bin, bn, addr, 208, 7, "sar");
+	}
+	if (eo) {
+		eo = x86_dec_shft_k81(bin, bn, addr, 209, 0, "rol");
+	}
+	if (eo) {
+		eo = x86_dec_shft_k81(bin, bn, addr, 209, 1, "ror");
+	}
+	if (eo) {
+		eo = x86_dec_shft_k81(bin, bn, addr, 209, 2, "rcl");
+	}
+	if (eo) {
+		eo = x86_dec_shft_k81(bin, bn, addr, 209, 3, "rcr");
+	}
+	if (eo) {
+		eo = x86_dec_shft_k81(bin, bn, addr, 209, 4, "shl");
+	}
+	if (eo) {
+		eo = x86_dec_shft_k81(bin, bn, addr, 209, 5, "shr");
+	}
+	if (eo) {
+		eo = x86_dec_shft_k81(bin, bn, addr, 209, 6, "sal");
+	}
+	if (eo) {
+		eo = x86_dec_shft_k81(bin, bn, addr, 209, 7, "sar");
+	}
+	if (eo) {
+		eo = x86_dec_shft_r8(bin, bn, addr, 210, 0, "rol");
+	}
+	if (eo) {
+		eo = x86_dec_shft_r8(bin, bn, addr, 210, 1, "ror");
+	}
+	if (eo) {
+		eo = x86_dec_shft_r8(bin, bn, addr, 210, 2, "rcl");
+	}
+	if (eo) {
+		eo = x86_dec_shft_r8(bin, bn, addr, 210, 3, "rcr");
+	}
+	if (eo) {
+		eo = x86_dec_shft_r8(bin, bn, addr, 210, 4, "shl");
+	}
+	if (eo) {
+		eo = x86_dec_shft_r8(bin, bn, addr, 210, 5, "shr");
+	}
+	if (eo) {
+		eo = x86_dec_shft_r8(bin, bn, addr, 210, 6, "sal");
+	}
+	if (eo) {
+		eo = x86_dec_shft_r8(bin, bn, addr, 210, 7, "sar");
+	}
+	if (eo) {
+		eo = x86_dec_shft_reg(bin, bn, addr, 211, 0, "rol");
+	}
+	if (eo) {
+		eo = x86_dec_shft_reg(bin, bn, addr, 211, 1, "ror");
+	}
+	if (eo) {
+		eo = x86_dec_shft_reg(bin, bn, addr, 211, 2, "rcl");
+	}
+	if (eo) {
+		eo = x86_dec_shft_reg(bin, bn, addr, 211, 3, "rcr");
+	}
+	if (eo) {
+		eo = x86_dec_shft_reg(bin, bn, addr, 211, 4, "shl");
+	}
+	if (eo) {
+		eo = x86_dec_shft_reg(bin, bn, addr, 211, 5, "shr");
+	}
+	if (eo) {
+		eo = x86_dec_shft_reg(bin, bn, addr, 211, 6, "sal");
+	}
+	if (eo) {
+		eo = x86_dec_shft_reg(bin, bn, addr, 211, 7, "sar");
 	}
 	if (eo) {
 		eo = x86_dec_blnk(bin, bn, addr, 255, 6, "push");
