@@ -3430,7 +3430,7 @@ uint8_t x86_64_dec_mvp(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, i
 		uint8_t reg = (bin[*bn] & 7) + (8 * rx0);
 		*bn += 1;
 		
-		printf("                  %02x  ", bin[*bn]);
+		printf("                  %02x ", bin[*bn]);
 		uint8_t k = bin[*bn];
 		*bn += 1;
 		printf("            %s %s, %u ", mn, x86_64_r8(reg), k);

@@ -549,6 +549,33 @@ uint8_t x86_dec_stck(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int
 	return 1;
 }
 
+uint8_t x86_dec_mvp(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int8_t* mn) {
+	if ((bin[*bn] & 248) == op) {
+		printf("%02x ", bin[*bn]);
+		uint8_t reg = bin[*bn] & 7;
+		*bn += 1;
+		
+		printf("         %02x ", bin[*bn]);
+		uint8_t k = bin[*bn];
+		*bn += 1;
+		printf("   %s %s, %u ", mn, x86_r8(reg), k);
+		
+		return 0;
+	}
+	else if ((bin[*bn] & 248) == op + 8) {
+		printf("%02x ", bin[*bn]);
+		uint8_t reg = bin[*bn] & 7;
+		*bn += 1;
+		
+		printf("         %02x %02x ", bin[*bn], bin[*bn + 1]);
+		uint16_t k = bin[*bn] + (bin[*bn + 1] << 8);
+		*bn += 2;
+		printf("%s %s, %u ", mn, x86_r16(reg), k);
+		return 0;
+	}
+	return 1;
+}
+
 uint8_t x86_dec_op_imm(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int8_t* mn) {
 	if (bin[*bn] == op) {
 		printf("%02x ", bin[*bn]);
@@ -633,7 +660,7 @@ uint8_t x86_dec_blnk(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0, ui
 	return 1;
 }
 
-uint8_t x86_dec_jmp(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int8_t* mn) {
+uint8_t x86_dec_cond(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int8_t* mn) {
 	if (bin[*bn] == op) {
 		printf("%02x ", bin[*bn]);
 		*bn += 1;
@@ -643,6 +670,20 @@ uint8_t x86_dec_jmp(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int8
 		*bn += 1;
 		
 		printf("      %s %u ", mn, k);
+		return 0;
+	}
+	return 1;
+}
+
+uint8_t x86_dec_jmp(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int8_t* mn) {
+	if (bin[*bn] == op) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		
+		printf("         %02x %02x ", bin[*bn], bin[*bn + 1]);
+		uint16_t k = bin[*bn] + (bin[*bn + 1] << 8);
+		*bn += 2;
+		printf("%sw %u ", mn, k);
 		return 0;
 	}
 	return 1;
@@ -1027,52 +1068,52 @@ void x86_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		eo = x86_dec_op_imm(bin, bn, addr, 104, "push");
 	}
 	if (eo) {
-		eo = x86_dec_jmp(bin, bn, addr, 112, "jo");
+		eo = x86_dec_cond(bin, bn, addr, 112, "jo");
 	}
 	if (eo) {
-		eo = x86_dec_jmp(bin, bn, addr, 113, "jno");
+		eo = x86_dec_cond(bin, bn, addr, 113, "jno");
 	}
 	if (eo) {
-		eo = x86_dec_jmp(bin, bn, addr, 114, "jc");
+		eo = x86_dec_cond(bin, bn, addr, 114, "jc");
 	}
 	if (eo) {
-		eo = x86_dec_jmp(bin, bn, addr, 115, "jnc");
+		eo = x86_dec_cond(bin, bn, addr, 115, "jnc");
 	}
 	if (eo) {
-		eo = x86_dec_jmp(bin, bn, addr, 116, "je");
+		eo = x86_dec_cond(bin, bn, addr, 116, "je");
 	}
 	if (eo) {
-		eo = x86_dec_jmp(bin, bn, addr, 117, "jne");
+		eo = x86_dec_cond(bin, bn, addr, 117, "jne");
 	}
 	if (eo) {
-		eo = x86_dec_jmp(bin, bn, addr, 118, "jna");
+		eo = x86_dec_cond(bin, bn, addr, 118, "jna");
 	}
 	if (eo) {
-		eo = x86_dec_jmp(bin, bn, addr, 119, "ja");
+		eo = x86_dec_cond(bin, bn, addr, 119, "ja");
 	}
 	if (eo) {
-		eo = x86_dec_jmp(bin, bn, addr, 120, "js");
+		eo = x86_dec_cond(bin, bn, addr, 120, "js");
 	}
 	if (eo) {
-		eo = x86_dec_jmp(bin, bn, addr, 121, "jns");
+		eo = x86_dec_cond(bin, bn, addr, 121, "jns");
 	}
 	if (eo) {
-		eo = x86_dec_jmp(bin, bn, addr, 122, "jpe");
+		eo = x86_dec_cond(bin, bn, addr, 122, "jpe");
 	}
 	if (eo) {
-		eo = x86_dec_jmp(bin, bn, addr, 123, "jpo");
+		eo = x86_dec_cond(bin, bn, addr, 123, "jpo");
 	}
 	if (eo) {
-		eo = x86_dec_jmp(bin, bn, addr, 124, "jl");
+		eo = x86_dec_cond(bin, bn, addr, 124, "jl");
 	}
 	if (eo) {
-		eo = x86_dec_jmp(bin, bn, addr, 125, "jge");
+		eo = x86_dec_cond(bin, bn, addr, 125, "jge");
 	}
 	if (eo) {
-		eo = x86_dec_jmp(bin, bn, addr, 126, "jle");
+		eo = x86_dec_cond(bin, bn, addr, 126, "jle");
 	}
 	if (eo) {
-		eo = x86_dec_jmp(bin, bn, addr, 127, "jg");
+		eo = x86_dec_cond(bin, bn, addr, 127, "jg");
 	}
 	if (eo) {
 		eo = x86_dec_k80(bin, bn, addr, 128, 0, "add");
@@ -1184,6 +1225,9 @@ void x86_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 	}
 	if (eo) {
 		eo = x86_dec_byt(bin, bn, addr, 159, "lahf ah");
+	}
+	if (eo) {
+		eo = x86_dec_mvp(bin, bn, addr, 176, "mov");
 	}
 	if (eo) {
 		eo = x86_dec_k80(bin, bn, addr, 192, 0, "rol");
@@ -1328,6 +1372,27 @@ void x86_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 	}
 	if (eo) {
 		eo = x86_dec_shft_reg(bin, bn, addr, 211, 7, "sar");
+	}
+	if (eo) {
+		eo = x86_dec_jmp(bin, bn, addr, 232, "call");
+	}
+	if (eo) {
+		eo = x86_dec_jmp(bin, bn, addr, 233, "jmp");
+	}
+	if (eo) {
+		eo = x86_dec_cond(bin, bn, addr, 235, "jmp");
+	}
+	if (eo) {
+		eo = x86_dec_blnk(bin, bn, addr, 255, 0, "inc");
+	}
+	if (eo) {
+		eo = x86_dec_blnk(bin, bn, addr, 255, 1, "dec");
+	}
+	if (eo) {
+		eo = x86_dec_blnk(bin, bn, addr, 255, 2, "call");
+	}
+	if (eo) {
+		eo = x86_dec_blnk(bin, bn, addr, 255, 4, "jmp");
 	}
 	if (eo) {
 		eo = x86_dec_blnk(bin, bn, addr, 255, 6, "push");
