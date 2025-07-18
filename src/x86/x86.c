@@ -601,6 +601,120 @@ uint8_t x86_dec_op_imm(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, i
 	return 1;
 }
 
+uint8_t x86_dec_alnk(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0, uint8_t op1, int8_t* mn) {
+	if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (0 | op1)) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		printf("%02x ", bin[*bn]);
+		uint8_t mrd = (bin[*bn] & 7);
+		
+		if (mrd == 6) {
+			*bn += 1;
+			printf("%02x %02x ", bin[*bn], bin[*bn + 1]);
+			uint16_t d = bin[*bn] + (bin[*bn + 1] << 8);
+			*bn += 2;
+			printf("      %sb (%u) ", mn, d);
+		}
+		else {
+			*bn += 1;
+			printf("            %sb (%s) ", mn, x86_a16(mrd));
+		}
+		return 0;
+	}
+	else if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (8 | op1)) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		printf("%02x ", bin[*bn]);
+		uint8_t mrd = (bin[*bn] & 7);
+		
+		*bn += 1;
+		printf("%02x ", bin[*bn]);
+		uint8_t d = bin[*bn];
+		*bn += 1;
+		printf("         %sb (%s, %u) ", mn, x86_a16(mrd), d);
+		return 0;
+	}
+	else if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (16 | op1)) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		printf("%02x ", bin[*bn]);
+		uint8_t mrd = (bin[*bn] & 7);
+		
+		*bn += 1;
+		printf("%02x %02x ", bin[*bn], bin[*bn + 1]);
+		uint16_t d = bin[*bn] + (bin[*bn + 1] << 8);;
+		*bn += 2;
+		printf("      %sb (%s, %u) ", mn, x86_a16(mrd), d);
+		return 0;
+	}
+	else if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (24 | op1)) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		printf("%02x ", bin[*bn]);
+		uint8_t mrd = (bin[*bn] & 7);
+		
+		*bn += 1;
+		printf("            %s %s ", mn, x86_r16(mrd));
+		return 0;
+	}
+	else if (bin[*bn] == op0 + 1 && (bin[*bn + 1] >> 3) == (0 | op1)) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		printf("%02x ", bin[*bn]);
+		uint8_t mrd = (bin[*bn] & 7);
+		
+		if (mrd == 6) {
+			*bn += 1;
+			printf("%02x %02x ", bin[*bn], bin[*bn + 1]);
+			uint16_t d = bin[*bn] + (bin[*bn + 1] << 8);
+			*bn += 2;
+			printf("      %sw (%u) ", mn, d);
+		}
+		else {
+			*bn += 1;
+			printf("            %sw (%s) ", mn, x86_a16(mrd));
+		}
+		return 0;
+	}
+	else if (bin[*bn] == op0 + 1 && (bin[*bn + 1] >> 3) == (8 | op1)) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		printf("%02x ", bin[*bn]);
+		uint8_t mrd = (bin[*bn] & 7);
+		
+		*bn += 1;
+		printf("%02x ", bin[*bn]);
+		uint8_t d = bin[*bn];
+		*bn += 1;
+		printf("         %sw (%s, %u) ", mn, x86_a16(mrd), d);
+		return 0;
+	}
+	else if (bin[*bn] == op0 + 1 && (bin[*bn + 1] >> 3) == (16 | op1)) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		printf("%02x ", bin[*bn]);
+		uint8_t mrd = (bin[*bn] & 7);
+		
+		*bn += 1;
+		printf("%02x %02x ", bin[*bn], bin[*bn + 1]);
+		uint16_t d = bin[*bn] + (bin[*bn + 1] << 8);;
+		*bn += 2;
+		printf("      %sw (%s, %u) ", mn, x86_a16(mrd), d);
+		return 0;
+	}
+	else if (bin[*bn] == op0 + 1 && (bin[*bn + 1] >> 3) == (24 | op1)) {
+		printf("%02x ", bin[*bn]);
+		*bn += 1;
+		printf("%02x ", bin[*bn]);
+		uint8_t mrd = (bin[*bn] & 7);
+		
+		*bn += 1;
+		printf("            %s %s ", mn, x86_r16(mrd));
+		return 0;
+	}
+	return 1;
+}
+
 uint8_t x86_dec_blnk(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0, uint8_t op1, int8_t* mn) {
 	if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (0 | op1)) {
 		printf("%02x ", bin[*bn]);
@@ -1383,10 +1497,10 @@ void x86_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		eo = x86_dec_cond(bin, bn, addr, 235, "jmp");
 	}
 	if (eo) {
-		eo = x86_dec_blnk(bin, bn, addr, 255, 0, "inc");
+		eo = x86_dec_alnk(bin, bn, addr, 254, 0, "inc");
 	}
 	if (eo) {
-		eo = x86_dec_blnk(bin, bn, addr, 255, 1, "dec");
+		eo = x86_dec_alnk(bin, bn, addr, 254, 1, "dec");
 	}
 	if (eo) {
 		eo = x86_dec_blnk(bin, bn, addr, 255, 2, "call");
