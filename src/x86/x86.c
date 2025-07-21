@@ -1509,6 +1509,15 @@ void x86_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		eo = x86_dec_byt(bin, bn, addr, 195, "ret");
 	}
 	if (eo) {
+		eo = x86_dec_imm(bin, bn, addr, 199, 0, "mov");
+	}
+	if (eo) {
+		eo = x86_dec_byt(bin, bn, addr, 204, "int 3");
+	}
+	if (eo) {
+		eo = x86_dec_cond(bin, bn, addr, 205, "int");
+	}
+	if (eo) {
 		eo = x86_dec_shft_k80(bin, bn, addr, 208, 0, "rol");
 	}
 	if (eo) {
