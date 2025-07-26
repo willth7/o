@@ -1127,18 +1127,18 @@ uint8_t x86_64_dec_r81(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, i
 					*bn += 1;
 					if (rex) {
 						if (lga) {
-							printf("                           %s %s, (%s) ", mn, x86_64_r8x(mrs), x86_64_r32(mrs));
+							printf("                           %s %s, (%s) ", mn, x86_64_r8x(mrs), x86_64_r32(b));
 						}
 						else {
-							printf("                           %s %s, (%s) ", mn, x86_64_r8x(mrs), x86_64_r64(mrs));
+							printf("                           %s %s, (%s) ", mn, x86_64_r8x(mrs), x86_64_r64(b));
 						}
 					}
 					else {
 						if (lga) {
-							printf("                           %s %s, (%s) ", mn, x86_64_r8(mrs), x86_64_r32(mrs));
+							printf("                           %s %s, (%s) ", mn, x86_64_r8(mrs), x86_64_r32(b));
 						}
 						else {
-							printf("                           %s %s, (%s) ", mn, x86_64_r8(mrs), x86_64_r64(mrs));
+							printf("                           %s %s, (%s) ", mn, x86_64_r8(mrs), x86_64_r64(b));
 						}
 					}
 				}
@@ -1227,18 +1227,18 @@ uint8_t x86_64_dec_r81(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, i
 				*bn += 1;
 				if (rex) {
 					if (lga) {
-						printf("                              %s %s, (%s) ", mn, x86_64_r8x(mrd), x86_64_r32(mrs));
+						printf("                              %s %s, (%s) ", mn, x86_64_r8x(mrs), x86_64_r32(mrd));
 					}
 					else {
-						printf("                              %s %s, (%s) ", mn, x86_64_r8x(mrd), x86_64_r64(mrs));
+						printf("                              %s %s, (%s) ", mn, x86_64_r8x(mrs), x86_64_r64(mrd));
 					}
 				}
 				else {
 					if (lga) {
-						printf("                              %s %s, (%s) ", mn, x86_64_r8(mrd), x86_64_r32(mrs));
+						printf("                              %s %s, (%s) ", mn, x86_64_r8(mrs), x86_64_r32(mrd));
 					}
 					else {
-						printf("                              %s %s, (%s) ", mn, x86_64_r8(mrd), x86_64_r64(mrs));
+						printf("                              %s %s, (%s) ", mn, x86_64_r8(mrs), x86_64_r64(mrd));
 					}
 				}
 			}
