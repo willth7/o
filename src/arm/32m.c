@@ -340,7 +340,7 @@ void arm_32m_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 	else if ((bin[*bn + 1] & 248) == 72) {
 		printf("ldr ");
 		printf("r%u, ", bin[*bn + 1] & 7);
-		printf("pc, %u ", bin[*bn]);
+		printf("pc, %u", bin[*bn]);
 		*bn += 2;
 		*addr = (bin[*bn] * 4) + *bn + 2;
 	}
@@ -457,7 +457,7 @@ void arm_32m_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 	else if ((bin[*bn + 1] & 248) == 160) {
 		printf("adr ");
 		printf("r%u, ", bin[*bn + 1] & 7);
-		printf("pc, %u ", bin[*bn]);
+		printf("pc, %u", bin[*bn]);
 		*bn += 2;
 		*addr = (bin[*bn] * 4) + *bn + 2;
 	}
@@ -592,26 +592,26 @@ void arm_32m_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 	}
 	else if (bin[*bn + 1] == 222) {
 		printf("udf ");
-		printf("%u ", bin[*bn]);
+		printf("%u", bin[*bn]);
 		*bn += 2;
 		*addr = (bin[*bn] * 2) + *bn + 4;
 	}
 	else if (bin[*bn + 1] == 223) {
 		printf("svc ");
-		printf("%u ", bin[*bn]);
+		printf("%u", bin[*bn]);
 		*bn += 2;
 		*addr = (bin[*bn] * 2) + *bn + 4;
 	}
 	else if ((bin[*bn + 1] & 248) == 224) {
 		printf("b ");
-		printf("%u ", bin[*bn] + ((bin[*bn + 1] & 7) << 8));
+		printf("%u", bin[*bn] + ((bin[*bn + 1] & 7) << 8));
 		*bn += 2;
 		*addr = ((bin[*bn] + ((bin[*bn + 1] & 7) << 8)) * 2) + *bn + 4;
 	}
 	else if ((bin[*bn + 1] & 240) == 208) {
-		printf("b");
+		printf("b ");
 		printf("%s ", arm_32m_c4(bin[*bn + 1] & 15));
-		printf("%u ", bin[*bn]);
+		printf("%u", bin[*bn]);
 		*bn += 2;
 		*addr = (bin[*bn] * 2) + *bn + 4;
 	}

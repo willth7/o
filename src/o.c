@@ -46,7 +46,7 @@ void o_dasm(uint8_t* bin, uint64_t bn, struct o_sym_s* sym, uint64_t symn, int8_
 	while (bi < bn) {
 		for (uint64_t i = 0; i < symn; i++) {
 			if (sym[i].addr == bi) {
-				printf("(%s)\n", sym[i].str);
+				printf("[*%s]\n", sym[i].str);
 			}
 		}
 		
@@ -56,7 +56,7 @@ void o_dasm(uint8_t* bin, uint64_t bn, struct o_sym_s* sym, uint64_t symn, int8_
 		if (addr != (uint64_t) -1) {
 			for (uint64_t i = 0; i < symn; i++) {
 				if (sym[i].addr == addr) {
-					printf("; *%s", sym[i].str);
+					printf("; [*%s]", sym[i].str);
 				}
 			}
 		}
@@ -64,7 +64,7 @@ void o_dasm(uint8_t* bin, uint64_t bn, struct o_sym_s* sym, uint64_t symn, int8_
 	}
 }
 
-void o_read_bin(uint8_t* bin, uint64_t* bn, struct o_sym_s* sym, uint64_t* symn,int8_t* path, int8_t* e) {
+void o_read_bin(uint8_t* bin, uint64_t* bn, struct o_sym_s* sym, uint64_t* symn, int8_t* path, int8_t* e) {
 	FILE* f = fopen(path, "r");
 	if (!f) {
 		printf("[%s] error: file doesn't exist\n", path);

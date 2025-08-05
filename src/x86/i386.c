@@ -205,6 +205,27 @@ uint8_t i386_dec_r80(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int
 					printf("                           %s (%s, (%s)), %s ", mn, i386_r32(b), i386_r32(i), i386_r8(mrs));
 				}
 			}
+			else if ((mrd & 7) == 5) {
+				*bn += 1;
+				printf("   %02x %02x %02x %02x ", bin[*bn], bin[*bn + 1], bin[*bn + 2], bin[*bn + 3]);
+				uint32_t d = bin[*bn] + (bin[*bn + 1] << 8) + (bin[*bn + 2] << 16) + (bin[*bn + 3] << 24);
+				*bn += 4;
+				if (d) {
+					if (d & 2147483648) {
+						d = ~d + 1;
+						printf("               %s (eip, -%u), %s", mn, d, i386_r8(mrs));
+						*addr = *bn - d;
+					}
+					else {
+						printf("               %s (eip, %u), %s", mn, d, x86_64_r8(mrs));
+						*addr = *bn + d;
+					}
+				}
+				else {
+					printf("               %s (eip), %s", mn, x86_64_r8(mrs));
+					*addr = *bn;
+				}
+			}
 			else {
 				*bn += 1;
 				printf("                              %s (%s), %s ", mn, i386_r32(mrd), i386_r8(mrs));
@@ -3081,10 +3102,18 @@ uint8_t i386_dec_byt_imm(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op,
 		*bn += 1;
 		
 		printf("                  %02x ", bin[*bn]);
-		uint8_t d = bin[*bn];
+		uint8_t k = bin[*bn];
 		*bn += 1;
 		
-		printf("            %s %u ", mn, d);
+		if (k & 128) {
+			k = ~k + 1;
+			printf("            %s -%u ", mn, k);
+			*addr = *bn - k;
+		}
+		else {
+			printf("            %s %u ", mn, k);
+			*addr = *bn + k;
+		}
 		return 0;
 	}
 	return 1;
@@ -3099,7 +3128,15 @@ uint8_t i386_dec_cond(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, in
 		uint32_t k = bin[*bn] + (bin[*bn + 1] << 8) + (bin[*bn + 2] << 16) + (bin[*bn + 3] << 24);
 		*bn += 4;
 		
-		printf("   %s %u ", mn, k);
+		if (k & 2147483648) {
+			k = ~k + 1;
+			printf("   %s -%u ", mn, k);
+			*addr = *bn - k;
+		}
+		else {
+			printf("   %s %u ", mn, k);
+			*addr = *bn + k;
+		}
 		return 0;
 	}
 	return 1;
@@ -3114,13 +3151,29 @@ uint8_t i386_dec_jmp(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int
 			printf("               %02x %02x ", bin[*bn], bin[*bn + 1]);
 			uint16_t k = bin[*bn] + (bin[*bn + 1] << 8);
 			*bn += 2;
-			printf("         %sw %u ", mn, k);
+			if (k & 32768) {
+				k = ~k + 1;
+				printf("         %sw -%u ", mn, k);
+				*addr = *bn - k;
+			}
+			else {
+				printf("         %sw %u ", mn, k);
+				*addr = *bn + k;
+			}
 		}
 		else {
 			printf("               %02x %02x %02x %02x ", bin[*bn], bin[*bn + 1], bin[*bn + 2], bin[*bn + 3]);
 			uint32_t k = bin[*bn] + (bin[*bn + 1] << 8) + (bin[*bn + 2] << 16) + (bin[*bn + 3] << 24);
 			*bn += 4;
-			printf("   %s %u ", mn, k);
+			if (k & 2147483648) {
+				k = ~k + 1;
+				printf("   %s -%u ", mn, k);
+				*addr = *bn - k;
+			}
+			else {
+				printf("   %s %u ", mn, k);
+				*addr = *bn + k;
+			}
 		}
 		return 0;
 	}

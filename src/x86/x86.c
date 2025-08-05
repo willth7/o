@@ -897,7 +897,15 @@ uint8_t x86_dec_cond(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int
 		uint8_t k = bin[*bn];
 		*bn += 1;
 		
-		printf("      %s %u ", mn, k);
+		if (k & 128) {
+			k = ~k + 1;
+			printf("      %s -%u ", mn, k);
+			*addr = *bn - k;
+		}
+		else {
+			printf("      %s %u ", mn, k);
+			*addr = *bn + k;
+		}
 		return 0;
 	}
 	return 1;
@@ -911,7 +919,15 @@ uint8_t x86_dec_jmp(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int8
 		printf("         %02x %02x ", bin[*bn], bin[*bn + 1]);
 		uint16_t k = bin[*bn] + (bin[*bn + 1] << 8);
 		*bn += 2;
-		printf("%sw %u ", mn, k);
+		if (k & 32768) {
+			k = ~k + 1;
+			printf("%sw -%u ", mn, k);
+			*addr = *bn - k;
+		}
+		else {
+			printf("%sw %u ", mn, k);
+			*addr = *bn + k;
+		}
 		return 0;
 	}
 	return 1;
