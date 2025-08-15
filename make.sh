@@ -1,3 +1,3 @@
 #! /bin/sh
 
-gcc -Os -o o src/o.c src/*/*.c
+gcc -Os -o o src/o.c src/*/*.c -w
