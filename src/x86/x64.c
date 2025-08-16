@@ -5207,6 +5207,72 @@ uint8_t x86_64_dec_blnk(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0,
 				}
 			}
 		}
+		else if ((mrd & 7) == 5) {
+			*bn += 1;
+			printf("   %02x %02x %02x %02x ", bin[*bn], bin[*bn + 1], bin[*bn + 2], bin[*bn + 3]);
+			uint32_t d = bin[*bn] + (bin[*bn + 1] << 8) + (bin[*bn + 2] << 16) + (bin[*bn + 3] << 24);
+			*bn += 4;
+			if (d) {
+				if (d & 2147483648) {
+					d = ~d + 1;
+					if (lgo) {
+						if (lga) {
+							printf("               %sw (eip, -%u)", mn, d);
+						}
+						else {
+							printf("               %sw (rip, -%u)", mn, d);
+						}
+					}
+					else {
+						if (lga) {
+							printf("               %s (eip, -%u)", mn, d);
+						}
+						else {
+							printf("               %s (rip, -%u)", mn, d);
+						}
+					}
+					*addr = *bn - d;
+				}
+				else {
+					if (lgo) {
+						if (lga) {
+							printf("               %sw (eip, %u)", mn, d);
+						}
+						else {
+							printf("               %sw (rip, %u)", mn, d);
+						}
+					}
+					else {
+						if (lga) {
+							printf("               %s (eip, %u)", mn, d);
+						}
+						else {
+							printf("               %s (rip, %u)", mn, d);
+						}
+					}
+					*addr = *bn + d;
+				}
+			}
+			else {
+				if (lgo) {
+					if (lga) {
+						printf("               %sw (eip)", mn);
+					}
+					else {
+						printf("               %sw (rip)", mn);
+					}
+				}
+				else {
+					if (lga) {
+						printf("               %s (eip)", mn);
+					}
+					else {
+						printf("               %s (rip)", mn);
+					}
+				}
+				*addr = *bn;
+			}
+		}
 		else {
 			*bn += 1;
 			if (lgo) {
@@ -5669,6 +5735,42 @@ uint8_t x86_64_dec_alnk(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0,
 				}
 			}
 		}
+		else if ((mrd & 7) == 5) {
+			*bn += 1;
+			printf("   %02x %02x %02x %02x ", bin[*bn], bin[*bn + 1], bin[*bn + 2], bin[*bn + 3]);
+			uint32_t d = bin[*bn] + (bin[*bn + 1] << 8) + (bin[*bn + 2] << 16) + (bin[*bn + 3] << 24);
+			*bn += 4;
+			if (d) {
+				if (d & 2147483648) {
+					d = ~d + 1;
+					if (lga) {
+						printf("               %sb (eip, -%u)", mn, d);
+					}
+					else {
+						printf("               %sb (rip, -%u)", mn, d);
+					}
+					*addr = *bn - d;
+				}
+				else {
+					if (lga) {
+						printf("               %sb (eip, %u)", mn, d);
+					}
+					else {
+						printf("               %sb (rip, %u)", mn, d);
+					}
+					*addr = *bn + d;
+				}
+			}
+			else {
+				if (lga) {
+					printf("               %sb (eip)", mn);
+				}
+				else {
+					printf("               %sb (rip)", mn);
+				}
+				*addr = *bn;
+			}
+		}
 		else {
 			*bn += 1;
 			if (lga) {
@@ -6017,6 +6119,96 @@ uint8_t x86_64_dec_alnk(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0,
 						printf("                           %sq (%s, (%s))", mn, x86_64_r64(b), x86_64_r64(i));
 					}
 				}
+			}
+		}
+		else if ((mrd & 7) == 5) {
+			*bn += 1;
+			printf("   %02x %02x %02x %02x ", bin[*bn], bin[*bn + 1], bin[*bn + 2], bin[*bn + 3]);
+			uint32_t d = bin[*bn] + (bin[*bn + 1] << 8) + (bin[*bn + 2] << 16) + (bin[*bn + 3] << 24);
+			*bn += 4;
+			if (d) {
+				if (d & 2147483648) {
+					d = ~d + 1;
+					if (lgo) {
+						if (lga) {
+							printf("               %sw (eip, -%u)", mn, d);
+						}
+						else {
+							printf("               %sw (rip, -%u)", mn, d);
+						}
+					}
+					else if (!rx3) {
+						if (lga) {
+							printf("               %sd (eip, -%u)", mn, d);
+						}
+						else {
+							printf("               %sd (rip, -%u)", mn, d);
+						}
+					}
+					else {
+						if (lga) {
+							printf("               %sq (eip, -%u)", mn, d);
+						}
+						else {
+							printf("               %sq (rip, -%u)", mn, d);
+						}
+					}
+					*addr = *bn - d;
+				}
+				else {
+					if (lgo) {
+						if (lga) {
+							printf("               %sw (eip, %u)", mn, d);
+						}
+						else {
+							printf("               %sw (rip, %u)", mn, d);
+						}
+					}
+					else if (!rx3) {
+						if (lga) {
+							printf("               %sd (eip, %u)", mn, d);
+						}
+						else {
+							printf("               %sd (rip, %u)", mn, d);
+						}
+					}
+					else {
+						if (lga) {
+							printf("               %sq (eip, %u)", mn, d);
+						}
+						else {
+							printf("               %sq (rip, %u)", mn, d);
+						}
+					}
+					*addr = *bn + d;
+				}
+			}
+			else {
+				if (lgo) {
+					if (lga) {
+						printf("               %sw (eip)", mn);
+					}
+					else {
+						printf("               %sw (rip)", mn);
+					}
+				}
+				else if (!rx3) {
+					if (lga) {
+						printf("               %sd (eip)", mn);
+					}
+					else {
+						printf("               %sd (rip)", mn);
+					}
+				}
+				else {
+					if (lga) {
+						printf("               %sq (eip)", mn);
+					}
+					else {
+						printf("               %sq (rip)", mn);
+					}
+				}
+				*addr = *bn;
 			}
 		}
 		else {
@@ -6620,6 +6812,42 @@ uint8_t x86_64_dec_mlnk(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0,
 				}
 			}
 		}
+		else if ((mrd & 7) == 5) {
+			*bn += 1;
+			printf("   %02x %02x %02x %02x ", bin[*bn], bin[*bn + 1], bin[*bn + 2], bin[*bn + 3]);
+			uint32_t d = bin[*bn] + (bin[*bn + 1] << 8) + (bin[*bn + 2] << 16) + (bin[*bn + 3] << 24);
+			*bn += 4;
+			if (d) {
+				if (d & 2147483648) {
+					d = ~d + 1;
+					if (lga) {
+						printf("               %sb ax, (eip, -%u)", mn, d);
+					}
+					else {
+						printf("               %sb ax, (rip, -%u)", mn, d);
+					}
+					*addr = *bn - d;
+				}
+				else {
+					if (lga) {
+						printf("               %sb ax, (eip, %u)", mn, d);
+					}
+					else {
+						printf("               %sb ax, (rip, %u)", mn, d);
+					}
+					*addr = *bn + d;
+				}
+			}
+			else {
+				if (lga) {
+					printf("               %sb ax, (eip)", mn);
+				}
+				else {
+					printf("               %sb ax, (rip)", mn);
+				}
+				*addr = *bn;
+			}
+		}
 		else {
 			*bn += 1;
 			if (lga) {
@@ -6968,6 +7196,96 @@ uint8_t x86_64_dec_mlnk(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0,
 						printf("                           %sq rax, (%s, (%s))", mn, x86_64_r64(b), x86_64_r64(i));
 					}
 				}
+			}
+		}
+		else if ((mrd & 7) == 5) {
+			*bn += 1;
+			printf("   %02x %02x %02x %02x ", bin[*bn], bin[*bn + 1], bin[*bn + 2], bin[*bn + 3]);
+			uint32_t d = bin[*bn] + (bin[*bn + 1] << 8) + (bin[*bn + 2] << 16) + (bin[*bn + 3] << 24);
+			*bn += 4;
+			if (d) {
+				if (d & 2147483648) {
+					d = ~d + 1;
+					if (lgo) {
+						if (lga) {
+							printf("               %sw ax, (eip, -%u)", mn, d);
+						}
+						else {
+							printf("               %sw ax, (rip, -%u)", mn, d);
+						}
+					}
+					else if (!rx3) {
+						if (lga) {
+							printf("               %sd eax, (eip, -%u)", mn, d);
+						}
+						else {
+							printf("               %sd eax, (rip, -%u)", mn, d);
+						}
+					}
+					else {
+						if (lga) {
+							printf("               %sq rax, (eip, -%u)", mn, d);
+						}
+						else {
+							printf("               %sq rax, (rip, -%u)", mn, d);
+						}
+					}
+					*addr = *bn - d;
+				}
+				else {
+					if (lgo) {
+						if (lga) {
+							printf("               %sw ax, (eip, %u)", mn, d);
+						}
+						else {
+							printf("               %sw ax, (rip, %u)", mn, d);
+						}
+					}
+					else if (!rx3) {
+						if (lga) {
+							printf("               %sd eax, (eip, %u)", mn, d);
+						}
+						else {
+							printf("               %sd eax, (rip, %u)", mn, d);
+						}
+					}
+					else {
+						if (lga) {
+							printf("               %sq rax, (eip, %u)", mn, d);
+						}
+						else {
+							printf("               %sq rax, (rip, %u)", mn, d);
+						}
+					}
+					*addr = *bn + d;
+				}
+			}
+			else {
+				if (lgo) {
+					if (lga) {
+						printf("               %sw ax, (eip)", mn);
+					}
+					else {
+						printf("               %sw ax, (rip)", mn);
+					}
+				}
+				else if (!rx3) {
+					if (lga) {
+						printf("               %sd eax, (eip)", mn);
+					}
+					else {
+						printf("               %sd eax, (rip)", mn);
+					}
+				}
+				else {
+					if (lga) {
+						printf("               %sq rax, (eip)", mn);
+					}
+					else {
+						printf("               %sq rax, (rip)", mn);
+					}
+				}
+				*addr = *bn;
 			}
 		}
 		else {
