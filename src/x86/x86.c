@@ -1071,6 +1071,26 @@ uint8_t x86_dec_jmp(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int8
 	return 1;
 }
 
+uint8_t x86_dec_jmp_byt(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int8_t* mn) {
+	if (bin[*bn] == op) {
+		printf("%02x ", bin[*bn]);
+		*bn = *bn + 1;
+		printf("            %02x ", bin[*bn]);
+		uint8_t k = bin[*bn];
+		*bn = *bn + 1;
+		if (k & 128) {
+			printf("      %s -%u", mn, k);
+			*addr = *bn - k;
+		}
+		else {
+			printf("      %s %u", mn, k);
+			*addr = *bn + k;
+		}
+		return 0;
+	}
+	return 1;
+}
+
 uint8_t x86_dec_shft_k80(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0, uint8_t op1, int8_t* mn) {
 	if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (0 | op1)) {
 		printf("%02x ", bin[*bn]);
@@ -1818,7 +1838,7 @@ void x86_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		eo = x86_dec_jmp(bin, bn, addr, 233, "jmp");
 	}
 	if (eo) {
-		eo = x86_dec_cond(bin, bn, addr, 235, "jmp");
+		eo = x86_dec_jmp_byt(bin, bn, addr, 235, "jmp");
 	}
 	if (eo) {
 		eo = x86_dec_byt(bin, bn, addr, 240, "lock");

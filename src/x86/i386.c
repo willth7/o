@@ -4420,6 +4420,26 @@ uint8_t i386_dec_jmp(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int
 	return 1;
 }
 
+uint8_t i386_dec_jmp_byt(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op, int8_t* mn, uint8_t lga, uint8_t lgo) {
+	if (bin[*bn] == op) {
+		printf("%02x ", bin[*bn]);
+		*bn = *bn + 1;
+		printf("                  %02x ", bin[*bn]);
+		uint8_t k = bin[*bn];
+		*bn = *bn + 1;
+		if (k & 128) {
+			printf("            %s -%u", mn, k);
+			*addr = *bn - k;
+		}
+		else {
+			printf("            %s %u", mn, k);
+			*addr = *bn + k;
+		}
+		return 0;
+	}
+	return 1;
+}
+
 uint8_t i386_dec_shft_k80(uint8_t* bin, uint64_t* bn, uint64_t* addr, uint8_t op0, uint8_t op1, int8_t* mn, uint8_t lga, uint8_t lgo) {
 	if (bin[*bn] == op0 && (bin[*bn + 1] >> 3) == (0 | op1)) {
 		printf("%02x ", bin[*bn]);
@@ -6133,7 +6153,7 @@ void i386_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		eo = i386_dec_jmp(bin, bn, addr, 233, "jmp", lga, lgo);
 	}
 	if (eo) {
-		eo = i386_dec_cond(bin, bn, addr, 235, "jmp", lga, lgo);
+		eo = i386_dec_jmp_byt(bin, bn, addr, 235, "jmp", lga, lgo);
 	}
 	if (eo) {
 		eo = i386_dec_byt(bin, bn, addr, 240, "lock", lga, lgo);
