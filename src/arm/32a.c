@@ -494,8 +494,8 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		}
 		else if ((bin[*bn + 3] & 3) == 3 && (bin[*bn + 2] & 128) && ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)))) {
 			printf("(r%u, ", bin[*bn + 2] & 15);
-			printf("r%u), ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("r%u, ", bin[*bn] & 15);
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
 			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1));
 		}
 		else if ((bin[*bn + 3] & 3) == 3 && (bin[*bn + 2] & 128)) {
@@ -505,8 +505,8 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		else if ((bin[*bn + 3] & 3) == 2 && (bin[*bn + 2] & 128) && ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)))) {
 			printf("(r%u), ", bin[*bn + 2] & 15);
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1));
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("%u ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1));
 		}
 		else if ((bin[*bn + 3] & 3) == 2 && (bin[*bn + 2] & 128)) {
 			printf("(r%u), ", bin[*bn + 2] & 15);
@@ -528,8 +528,8 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		else if ((bin[*bn + 3] & 2) == 2 && (bin[*bn + 2] & 128) && ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)))) {
 			printf("(r%u), ", bin[*bn + 2] & 15);
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1));
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("%u ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1));
 		}
 		else if ((bin[*bn + 3] & 2) == 2 && (bin[*bn + 2] & 128)) {
 			printf("(r%u), ", bin[*bn + 2] & 15);
@@ -550,8 +550,8 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		}
 		else if ((bin[*bn + 3] & 2) == 2 && (bin[*bn + 2] & 128) && ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)))) {
 			printf("(r%u, ", bin[*bn + 2] & 15);
-			printf("r%u), ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("r%u, ", bin[*bn] & 15);
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
 			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1));
 		}
 		else if ((bin[*bn + 3] & 2) == 2 && (bin[*bn + 2] & 128)) {
@@ -581,8 +581,8 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		}
 		else if ((bin[*bn + 3] & 3) == 3 && (bin[*bn + 2] & 128) && ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)))) {
 			printf("(r%u, ", bin[*bn + 2] & 15);
-			printf("r%u), ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("r%u, ", bin[*bn] & 15);
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
 			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1));
 		}
 		else if ((bin[*bn + 3] & 3) == 3 && (bin[*bn + 2] & 128)) {
@@ -592,8 +592,8 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		else if ((bin[*bn + 3] & 3) == 2 && (bin[*bn + 2] & 128) && ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)))) {
 			printf("(r%u), ", bin[*bn + 2] & 15);
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1));
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("%u ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1));
 		}
 		else if ((bin[*bn + 3] & 3) == 2 && (bin[*bn + 2] & 128)) {
 			printf("(r%u), ", bin[*bn + 2] & 15);
@@ -615,8 +615,8 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		else if ((bin[*bn + 3] & 2) == 2 && (bin[*bn + 2] & 128) && ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)))) {
 			printf("(r%u), ", bin[*bn + 2] & 15);
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1));
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("%u ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1));
 		}
 		else if ((bin[*bn + 3] & 2) == 2 && (bin[*bn + 2] & 128)) {
 			printf("(r%u), ", bin[*bn + 2] & 15);
@@ -637,8 +637,8 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		}
 		else if ((bin[*bn + 3] & 2) == 2 && (bin[*bn + 2] & 128) && ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)))) {
 			printf("(r%u, ", bin[*bn + 2] & 15);
-			printf("r%u), ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("r%u, ", bin[*bn] & 15);
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
 			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1));
 		}
 		else if ((bin[*bn + 3] & 2) == 2 && (bin[*bn + 2] & 128)) {
@@ -668,8 +668,8 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		}
 		else if ((bin[*bn + 3] & 3) == 3 && (bin[*bn + 2] & 128) && ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)))) {
 			printf("(r%u, ", bin[*bn + 2] & 15);
-			printf("r%u), ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("r%u, ", bin[*bn] & 15);
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
 			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1));
 		}
 		else if ((bin[*bn + 3] & 3) == 3 && (bin[*bn + 2] & 128)) {
@@ -679,8 +679,8 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		else if ((bin[*bn + 3] & 3) == 2 && (bin[*bn + 2] & 128) && ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)))) {
 			printf("(r%u), ", bin[*bn + 2] & 15);
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1));
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("%u ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1));
 		}
 		else if ((bin[*bn + 3] & 3) == 2 && (bin[*bn + 2] & 128)) {
 			printf("(r%u), ", bin[*bn + 2] & 15);
@@ -702,8 +702,8 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		else if ((bin[*bn + 3] & 2) == 2 && (bin[*bn + 2] & 128) && ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)))) {
 			printf("(r%u), ", bin[*bn + 2] & 15);
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1));
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("%u ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1));
 		}
 		else if ((bin[*bn + 3] & 2) == 2 && (bin[*bn + 2] & 128)) {
 			printf("(r%u), ", bin[*bn + 2] & 15);
@@ -724,8 +724,8 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		}
 		else if ((bin[*bn + 3] & 2) == 2 && (bin[*bn + 2] & 128) && ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)))) {
 			printf("(r%u, ", bin[*bn + 2] & 15);
-			printf("r%u), ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("r%u, ", bin[*bn] & 15);
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
 			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1));
 		}
 		else if ((bin[*bn + 3] & 2) == 2 && (bin[*bn + 2] & 128)) {
@@ -755,8 +755,8 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		}
 		else if ((bin[*bn + 3] & 3) == 3 && (bin[*bn + 2] & 128) && ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)))) {
 			printf("(r%u, ", bin[*bn + 2] & 15);
-			printf("r%u), ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("r%u, ", bin[*bn] & 15);
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
 			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1));
 		}
 		else if ((bin[*bn + 3] & 3) == 3 && (bin[*bn + 2] & 128)) {
@@ -766,8 +766,8 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		else if ((bin[*bn + 3] & 3) == 2 && (bin[*bn + 2] & 128) && ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)))) {
 			printf("(r%u), ", bin[*bn + 2] & 15);
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1));
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("%u ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1));
 		}
 		else if ((bin[*bn + 3] & 3) == 2 && (bin[*bn + 2] & 128)) {
 			printf("(r%u), ", bin[*bn + 2] & 15);
@@ -789,8 +789,8 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		else if ((bin[*bn + 3] & 2) == 2 && (bin[*bn + 2] & 128) && ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)))) {
 			printf("(r%u), ", bin[*bn + 2] & 15);
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1));
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("%u ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1));
 		}
 		else if ((bin[*bn + 3] & 2) == 2 && (bin[*bn + 2] & 128)) {
 			printf("(r%u), ", bin[*bn + 2] & 15);
@@ -811,8 +811,8 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		}
 		else if ((bin[*bn + 3] & 2) == 2 && (bin[*bn + 2] & 128) && ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)))) {
 			printf("(r%u, ", bin[*bn + 2] & 15);
-			printf("r%u), ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("r%u, ", bin[*bn] & 15);
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
 			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1));
 		}
 		else if ((bin[*bn + 3] & 2) == 2 && (bin[*bn + 2] & 128)) {
@@ -1195,13 +1195,13 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		}
 		else if (bin[*bn] & 16) {
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("r%u) ", bin[*bn + 1] & 15);
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("r%u ", bin[*bn + 1] & 15);
 		}
 		else if ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1))) {
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)); 
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("%u ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)); 
 		}
 		else {
 			printf("r%u ", bin[*bn] & 15);
@@ -1219,13 +1219,13 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		}
 		else if (bin[*bn] & 16) {
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("r%u) ", bin[*bn + 1] & 15);
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("r%u ", bin[*bn + 1] & 15);
 		}
 		else if ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1))) {
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)); 
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("%u ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)); 
 		}
 		else {
 			printf("r%u ", bin[*bn] & 15);
@@ -1243,13 +1243,13 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		}
 		else if (bin[*bn] & 16) {
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("r%u) ", bin[*bn + 1] & 15);
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("r%u ", bin[*bn + 1] & 15);
 		}
 		else if ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1))) {
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)); 
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("%u ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)); 
 		}
 		else {
 			printf("r%u ", bin[*bn] & 15);
@@ -1267,13 +1267,13 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		}
 		else if (bin[*bn] & 16) {
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("r%u) ", bin[*bn + 1] & 15);
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("r%u ", bin[*bn + 1] & 15);
 		}
 		else if ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1))) {
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)); 
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("%u ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)); 
 		}
 		else {
 			printf("r%u ", bin[*bn] & 15);
@@ -1291,13 +1291,13 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		}
 		else if (bin[*bn] & 16) {
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("r%u) ", bin[*bn + 1] & 15);
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("r%u ", bin[*bn + 1] & 15);
 		}
 		else if ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1))) {
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)); 
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("%u ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)); 
 		}
 		else {
 			printf("r%u ", bin[*bn] & 15);
@@ -1315,13 +1315,13 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		}
 		else if (bin[*bn] & 16) {
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("r%u) ", bin[*bn + 1] & 15);
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("r%u ", bin[*bn + 1] & 15);
 		}
 		else if ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1))) {
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)); 
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("%u ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)); 
 		}
 		else {
 			printf("r%u ", bin[*bn] & 15);
@@ -1339,13 +1339,13 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		}
 		else if (bin[*bn] & 16) {
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("r%u) ", bin[*bn + 1] & 15);
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("r%u ", bin[*bn + 1] & 15);
 		}
 		else if ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1))) {
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)); 
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("%u ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)); 
 		}
 		else {
 			printf("r%u ", bin[*bn] & 15);
@@ -1363,13 +1363,13 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		}
 		else if (bin[*bn] & 16) {
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("r%u) ", bin[*bn + 1] & 15);
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("r%u ", bin[*bn + 1] & 15);
 		}
 		else if ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1))) {
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)); 
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("%u ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)); 
 		}
 		else {
 			printf("r%u ", bin[*bn] & 15);
@@ -1386,13 +1386,13 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		}
 		else if (bin[*bn] & 16) {
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("r%u) ", bin[*bn + 1] & 15);
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("r%u ", bin[*bn + 1] & 15);
 		}
 		else if ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1))) {
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)); 
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("%u ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)); 
 		}
 		else {
 			printf("r%u ", bin[*bn] & 15);
@@ -1409,13 +1409,13 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		}
 		else if (bin[*bn] & 16) {
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("r%u) ", bin[*bn + 1] & 15);
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("r%u ", bin[*bn + 1] & 15);
 		}
 		else if ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1))) {
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)); 
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("%u ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)); 
 		}
 		else {
 			printf("r%u ", bin[*bn] & 15);
@@ -1432,13 +1432,13 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		}
 		else if (bin[*bn] & 16) {
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("r%u) ", bin[*bn + 1] & 15);
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("r%u ", bin[*bn + 1] & 15);
 		}
 		else if ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1))) {
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)); 
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("%u ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)); 
 		}
 		else {
 			printf("r%u ", bin[*bn] & 15);
@@ -1455,13 +1455,13 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		}
 		else if (bin[*bn] & 16) {
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("r%u) ", bin[*bn + 1] & 15);
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("r%u ", bin[*bn + 1] & 15);
 		}
 		else if ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1))) {
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)); 
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("%u ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)); 
 		}
 		else {
 			printf("r%u ", bin[*bn] & 15);
@@ -1479,13 +1479,13 @@ void arm_32a_dec(uint8_t* bin, uint64_t* bn, uint64_t* addr) {
 		}
 		else if (bin[*bn] & 16) {
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("r%u) ", bin[*bn + 1] & 15);
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("r%u ", bin[*bn + 1] & 15);
 		}
 		else if ((bin[*bn] & 96) || ((bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1))) {
 			printf("r%u, ", bin[*bn] & 15);
-			printf("(%s, ", arm_32a_sh(bin[*bn] & 96));
-			printf("%u) ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)); 
+			printf("%s, ", arm_32a_sh(bin[*bn] & 96));
+			printf("%u ", (bin[*bn] >> 7) + ((bin[*bn + 1] & 15) << 1)); 
 		}
 		else {
 			printf("r%u ", bin[*bn] & 15);
